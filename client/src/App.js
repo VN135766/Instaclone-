@@ -27,9 +27,9 @@ function App() {
 
   return (
     <div>
-      <Navigation />
       <Container>
         <Router>
+          <Navigation />
           <Routes>
             <Route path="/" element={<Home authUser={ authUser } />} />
             <Route path="/login" element={<Login />} />
