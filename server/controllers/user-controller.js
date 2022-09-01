@@ -6,16 +6,24 @@ const connection = require("../config/connection")
 
 require("dotenv").config()
 
-const createUser = async (req, res) => {
-  try {
-    const createQuery = await User.create(req.body);
-    res.status(200).json(sample);
-  } catch(err) {
-    res.status(400).json({ message: 'Unable to create user' });
-  }
+// const createUser = async (req, res) => {
+//   console.log('createUser Route called')
+
+//   try {
+//     const createQuery = await User.create(req.body);
+//     res.status(200).json(sample);
+//   } catch(err) {
+//     res.status(400).json({ message: 'Unable to create user' });
+//   }
+// }
+const createUser = ({ body }, res) => {
+  User.create(body)
+  .then(dbUsersData => res.json(dbUsersData))
+  .catch(err => res.status(400).json({ message: 'Unable to create user' }));
 }
   
 const getAllUsers = async (req, res) => {
+  console.log('getAllUsers Route called')
   try {
     const getAllQuery = await User.find({});
     res.status(200).json({ result: "success", payload: getAllQuery });
