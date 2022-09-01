@@ -1,0 +1,23 @@
+.threeDots {
+  justify-content: flex-end;
+}
+
+.username {
+  margin-left: 1em;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: white;
+}
+
+.likes {
+  font-weight: bold;
+}
+
+.commentsAndLikesBar {
+  margin-top: 1em;
+  font-size: 0.9em;
+}
