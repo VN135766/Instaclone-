@@ -22,7 +22,11 @@ const Navigation = (props) => {
 
             <Nav.Link href="/post">Post</Nav.Link>
 
+<<<<<<< HEAD
 >>>>>>> 04a260c390c750be111ebbfdc13a8c0048ba6dbb
+=======
+>>>>>>> main
+>>>>>>> develop
           </Nav>
         </Navbar.Collapse>
       </Container>
