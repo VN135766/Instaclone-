@@ -13,7 +13,9 @@ const Navigation = (props) => {
             <Nav.Link href="/">Home</Nav.Link>
             <Nav.Link href="/users">Following</Nav.Link>
             <Nav.Link href="/login">Login</Nav.Link>
+
             <Nav.Link href="/post">Post</Nav.Link>
+
           </Nav>
         </Navbar.Collapse>
       </Container>

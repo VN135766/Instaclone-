@@ -7,6 +7,7 @@ import User from "./pages/User"
 import Login from "./pages/Login"
 import PageNotFound from "./pages/404"
 import Navigation from "./components/Navigation"
+
 import { Col, Row } from 'react-bootstrap';
 import { Post } from './components/Post';
 
@@ -36,7 +37,9 @@ function App() {
             <Route path="/" element={<Home authUser={ authUser } />} />
             <Route path="/login" element={<Login />} />
             <Route path="/users" element={<Users />} />
+
             <Route path="/Post" element={<Post />} />
+
             <Route path="/user">
               <Route path=":id" element={<User />} />
             </Route>
