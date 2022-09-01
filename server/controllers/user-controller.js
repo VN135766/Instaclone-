@@ -4,8 +4,11 @@ const cookie = require("cookie")
 const bcrypt = require("bcrypt")
 const connection = require("../config/connection")
 
-require("dotenv").config()
-
+const dotenv = require("dotenv");
+dotenv.config()
+// const jwtSecret = process.env.JWT_SECRET;
+const jwtSecret = "temp secret";
+console.log('process.env.JWT_SECRET: ',jwtSecret)
 
 const createUser = async ({ body }, res) => {
   await User.create(body)
@@ -45,7 +48,7 @@ const authenticateLogin = async (req, res) => {
   const { password, ...modifiedUser } = foundUser
 
   // Create a token to represent the authenticated user
-  const token = jwt.sign({ _id: foundUser._id, email: foundUser.email}, process.env.JWT_SECRET)
+  const token = jwt.sign({ _id: foundUser._id, email: foundUser.email}, jwtSecret)
 
   res
     .status(200)
@@ -54,6 +57,8 @@ const authenticateLogin = async (req, res) => {
 }
 
 const lookupUserByToken = async (req, res) => {
+  console.log("lookupUserByToken")
+  console.log("req.headers :",req.headers)
   if( !req.headers || !req.headers.cookie ) return res.status(401).json({msg: "un-authorized"})
 
   // The node package named cookie will parse cookies for us
