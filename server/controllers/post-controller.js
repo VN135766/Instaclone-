@@ -28,6 +28,7 @@ const { Post } = require('../models');
     .catch(err => res.status(400).json({ message: 'Unable to create post' }));
   }
 
+
   // get post by id
   const deletePost = async (req, res) => {
     try {
@@ -43,4 +44,5 @@ module.exports = {
   createPost,
   getPostById,
   deletePost
+
 }
