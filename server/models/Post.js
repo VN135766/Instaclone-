@@ -20,9 +20,13 @@ const PostSchema = new Schema (
       type: String,
       ref: "User"
     }],
+    tags: [{
+      type: String,
+      trim: true
+    }],
     createdBy: {
       type: Schema.Types.ObjectId,
-      ref: 'Comment'
+      ref: 'User'
     },
     createdAt: {
       type: Date,

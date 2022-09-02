@@ -3,11 +3,11 @@ const dateFormat = require('../utils/dateFormat');
 
 const CommentSchema = new Schema(
   {
-    writtenBy: {
+    author: {
       type: Schema.Types.ObjectId,
       ref: 'Comment'
     },
-    commentBody: {
+    body: {
       type: String,
       required: true,
       trim: true

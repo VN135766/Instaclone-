@@ -5,25 +5,29 @@ const {
   deletePost,
   getAllPosts,
   getPostById,
-  getPostsByCreator,
-  likePost
+  // updatePost,
+  // getPostsByCreator,
+  // likePost
 } = require('../../controllers/post-controller.js');
 
-// Declare the routes that point to the controllers above
+// /api/post
 router.route('/')
-  .get(getAllPosts)
   .post(createPost)
+  .get(getAllPosts)
+
 
   
-router.route("/lookup")
-  .get(getPostsByCreator)
+// router.route("/lookup")
+//   .get(getPostsByCreator)
 
+//  /api/post/:id
 router.route('/:id')
   .get(getPostById)
   .delete(deletePost)
-  .put(likePost)
+  // .put(updatePost)
+//   .put(likePost)
 
 
-router.route('/:id/comment')
+// router.route('/:id/comment')
 
 module.exports = router
