@@ -11,22 +11,9 @@ const Navigation = (props) => {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-<<<<<<< HEAD
             <Nav.Link as={Link} to="/">Home</Nav.Link>
             <Nav.Link as={Link} to="/users">Following</Nav.Link>
             <Nav.Link as={Link} to="/login">Login</Nav.Link>
-=======
-            <Nav.Link href="/">Home</Nav.Link>
-            <Nav.Link href="/users">Following</Nav.Link>
-            <Nav.Link href="/login">Login</Nav.Link>
-
-            <Nav.Link href="/post">Post</Nav.Link>
-
-<<<<<<< HEAD
->>>>>>> 04a260c390c750be111ebbfdc13a8c0048ba6dbb
-=======
->>>>>>> main
->>>>>>> develop
           </Nav>
         </Navbar.Collapse>
       </Container>
