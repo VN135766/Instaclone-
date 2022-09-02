@@ -6,8 +6,8 @@ const connection = require("../config/connection")
 
 const dotenv = require("dotenv");
 dotenv.config()
-// const jwtSecret = process.env.JWT_SECRET;
-const jwtSecret = "top secret";
+const jwtSecret = process.env.JWT_SECRET;
+// const jwtSecret = "top secret";
 console.log('process.env.JWT_SECRET: ',jwtSecret)
 
 const createUser = async ({ body }, res) => {
@@ -59,21 +59,21 @@ const authenticateLogin = async (req, res) => {
 const lookupUserByToken = async (req, res) => {
   console.log("lookupUserByToken")
   console.log("req.headers :",req.headers)
-  if( !req.headers || !req.headers.cookie ) return res.status(401).json({msg: "un-authorized"})
+  if( !req.headers || !req.headers.cookie ) return res.status(401).json({msg: "un-authorized - 1"})
 
   // The node package named cookie will parse cookies for us
   const cookies = cookie.parse(req.headers.cookie)
 
   // Get the token from the request headers & decode it 
   const token = cookies["auth-token"]  //cookies.authToken
-  if( !token ) return res.status(401).json({msg: "un-authorized"})
+  if( !token ) return res.status(401).json({msg: "un-authorized - 2"})
   
   // Look up the user from the decoded token
   const isVerified = jwt.verify(token, process.env.JWT_SECRET)
-  if( !isVerified ) return res.status(401).json({msg: "un-authorized"})
+  if( !isVerified ) return res.status(401).json({msg: "un-authorize - 3"})
 
   const user = await User.findById(isVerified._id)
-  if( !user ) return res.status(401).json({msg: "un-authorized"})
+  if( !user ) return res.status(401).json({msg: "un-authorized - 4"})
 
   return res.status(200).json({ result: "success", payload: { _id: user._id, email: user.email } })
 }
