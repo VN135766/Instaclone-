@@ -3,21 +3,38 @@ const dateFormat = require('../utils/dateFormat');
 
 const PostSchema = new Schema (
   {
-    postCaption: {
+    imageName: {
+      type: String,
+      required: true
+    },
+    image: {
+      data: Buffer,
+      contentType: String
+    },
+    imageCaption: {
       type: String,
       required: true,
       trim: true
     },
-    createdBy: {
+    likes: [{
       type: String,
-      required: true,
-      trim: true
+      ref: "User"
+    }],
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      ref: 'Comment'
     },
     createdAt: {
       type: Date,
       default: Date.now,
       get: (createdAtVal) => dateFormat(createdAtVal)
     },
+    comments: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'Comment'
+      }
+    ]
   },
   {
     toJSON: {
@@ -28,3 +45,9 @@ const PostSchema = new Schema (
   }
 )
 
+PostSchema.virtual('commentCount').get(function() {
+  return this.comments.length;
+});
+
+const Post = model("Post", PostSchema);
+module.exports = Post;
