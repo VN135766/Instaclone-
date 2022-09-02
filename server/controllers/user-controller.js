@@ -6,8 +6,8 @@ const connection = require("../config/connection")
 
 const dotenv = require("dotenv");
 dotenv.config()
-// const jwtSecret = process.env.JWT_SECRET;
-const jwtSecret = "top secret";
+const jwtSecret = process.env.JWT_SECRET;
+// const jwtSecret = "top secret";
 console.log('process.env.JWT_SECRET: ',jwtSecret)
 
 const createUser = async ({ body }, res) => {
