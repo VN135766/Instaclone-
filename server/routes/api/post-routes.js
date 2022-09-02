@@ -5,8 +5,9 @@ const {
   deletePost,
   getAllPosts,
   getPostById,
-  getPostsByCreator
-} = require('../../controllers/post-cintroller.js');
+  getPostsByCreator,
+  likePost
+} = require('../../controllers/post-controller.js');
 
 // Declare the routes that point to the controllers above
 router.route('/')
@@ -20,5 +21,9 @@ router.route("/lookup")
 router.route('/:id')
   .get(getPostById)
   .delete(deletePost)
+  .put(likePost)
+
+
+router.route('/:id/comment')
 
 module.exports = router

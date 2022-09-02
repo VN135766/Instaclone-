@@ -1,4 +1,4 @@
-const { User, Post } = require('../models');
+const { Post, User, Comment } = require('../models');
 
 
 const postController = {
@@ -91,4 +91,11 @@ const postController = {
       })
       .catch(err => res.status(400).json(err));
   }
+}
+module.exports = { 
+  createPost,
+  getAllPosts,
+  getPostById,
+  deletePost,
+  getPostsByCreator
 }

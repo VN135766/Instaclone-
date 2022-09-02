@@ -4,17 +4,15 @@ const { addComment,
         likeComment
 } = require('../../controllers/comment-controller');
 
-// /api/comments/<pizzaId>
+// /api/comments/<postId>
 router
-  .route('/:pizzaId').post(addComment);
+  .route('/:postId').post(addComment);
 
-// /api/comments/<pizzaId>/<commentId>
+// /api/comments/<postId>/<commentId>
 router
-  .route('/:pizzaId/:commentId')
+  .route('/:postId/:commentId')
   .put(likeComment)
   .delete(deleteComment);
 
-// /api/comments/<pizzaId>/<commentId>/<replyId>
-router.route('/:pizzaId/:commentId/:replyId').delete(removeReply);
   
 module.exports = router;
