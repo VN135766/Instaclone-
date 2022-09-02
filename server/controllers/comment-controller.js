@@ -1,18 +1,18 @@
-const { Comment, Post } = require('../models');
+const { Comment } = require('../models');
 
   // add comment
   const addComment = async ({ params, body }, res) => {
     console.log(params)
     console.log(body)
     await Comment.create(body)
-    .then(({ _id }) => {
-      conosle.log(Post)
-      return Post.findOneAndUpdate(
-        { _id: params.postId },
-        { $push: { comments: _id } },
-        { new: true }
-      );
-    })
+    // .then(({ _id }) => {
+    //   conosle.log(Post)
+    //   return Post.findByIdAndUpdate(
+    //     { _id: params.postId },
+    //     { $push: { comments: _id } },
+    //     { new: true }
+    //   );
+    // })
     .then(dbCommentData => {
       console.log(dbCommentData)
       if(!dbCommentData) {

@@ -5,7 +5,7 @@ const CommentSchema = new Schema(
   {
     author: {
       type: Schema.Types.ObjectId,
-      ref: 'Comment'
+      ref: 'User'
     },
     body: {
       type: String,
@@ -35,5 +35,5 @@ CommentSchema.virtual('likeCount').get(function() {
   return this.comments.likes.length;
 });
 
-const Comment = model('Comment', CommentSchema);
+const Comment = model("Comment", CommentSchema);
 module.exports = Comment;
