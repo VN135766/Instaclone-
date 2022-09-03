@@ -4,12 +4,14 @@ import Post from './Post'
 const Home = (props) => {
   const [posts, setPosts] = useState([
     {
+      id: 1,
       username: "placeholder",
       caption: "Placeholder Caption",
       imageUrl: "https://cdn-media-1.freecodecamp.org/images/1*qUlxDdY3T-rDtJ4LhLGkEg.png",
     },
     {
-      username: "placeholder",
+      id: 2,
+      username: "placeholder 2",
       caption: "Placeholder Caption",
       imageUrl: "https://cdn-media-1.freecodecamp.org/images/1*qUlxDdY3T-rDtJ4LhLGkEg.png",
     },
@@ -27,7 +29,7 @@ const Home = (props) => {
 
         {
           posts.map(post => (
-            <Post username={post.username} caption={post.caption} imageUrl={post.imageUrl}/>
+            <Post key={post.id} username={post.username} caption={post.caption} imageUrl={post.imageUrl}/>
           ))
         }
  
