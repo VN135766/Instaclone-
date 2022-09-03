@@ -69,26 +69,14 @@ const lookupUserByToken = async ({ headers }, res) => {
   if( !headers.token) return res.status(401).json({msg: "un-authorized - missing or expired token in req header"})
   
   const user = decodeToken(headers.token)
-
-  if (!user){
-    console.log("error: ",user)
-    return res.status(200).json({ result: "error", payload: { _id: user._id, email: user.email } })
+  console.log("{ user }: ",user)
+  if (user.result === "error"){
+    return res.status(200).json({ result: user.result, errName: user.name, errMsg: user.message })
 
   } else {
-    console.log("success: ", user)
-    return res.status(200).json({ result: "success", payload: { _id: user._id, email: user.email, user_name: user.user_name } })
+    return res.status(200).json({ result: user.result, _id: user._id, email: user.email, user_name: user.user_name } )
   }
 
-  
-  // // Look up the user from the decoded token
-  // const isVerified = jwt.verify(token, process.env.JWT_SECRET)
-  // if( !isVerified ) return res.status(401).json({msg: "un-authorize - 3"})
-
-  // const user = await User.findById(isVerified._id)
-  // if( !user ) return res.status(401).json({msg: "un-authorized - 4"})
-
-  return res.status(200).json({ result: "success", payload: { _id: user._id, email: user.email } })
-  // return res.status(200).json({ result: "success", payload: { token: headers.token } })
 }
 
 module.exports = { 

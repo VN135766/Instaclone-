@@ -43,12 +43,12 @@ module.exports = {
       email, 
       _id 
     };
-    
+
     console.log("inside signToken")
     console.log("secret: ", jwtSecret)
     console.log("expiration: ",expiration)
 
-    return jwt.sign({ data: payload }, jwtSecret, { expiresIn: expiration });
+    return jwt.sign(payload, jwtSecret, { expiresIn: expiration });
   },
 
   decodeToken: (token) => {
@@ -62,8 +62,8 @@ module.exports = {
         }
         return err
       } else {
-        // decoded.data.result="success"
-        return decoded
+        decoded.data.result="success"
+        return decoded.data
       }
     })
   }
