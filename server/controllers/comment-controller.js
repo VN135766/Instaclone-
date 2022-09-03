@@ -9,6 +9,7 @@ const { findById } = require('../models/User');
     .then(({ _id }) => {
       // console.log("ID: ", _id)
       // console.log("Posting comment to database")
+
       return Post.findByIdAndUpdate(
         { _id: params.postId },
         { $push: { comments: _id } },
@@ -23,7 +24,7 @@ const { findById } = require('../models/User');
       }
       res.json(dbCommentData);
     })
-    .catch(err => res.status(400).json({ message: 'Unable to create comment' }));
+    //.catch(err => res.status(400).json({ message: 'Unable to create comment' }));
   }
 
 
