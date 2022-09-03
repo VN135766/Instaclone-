@@ -1,7 +1,8 @@
 const router = require('express').Router();
+const upload = require('../../utils/upload');
 
 const {
-  createPost, 
+  createPost,
   deletePost,
   getAllPosts,
   getPostById,
@@ -12,11 +13,14 @@ const {
 
 // /api/post
 router.route('/')
-  .post(createPost)
+  .post(
+    upload.single('image'),
+    createPost
+  )
   .get(getAllPosts)
 
 
-  
+
 // router.route("/lookup")
 //   .get(getPostsByCreator)
 
@@ -24,7 +28,7 @@ router.route('/')
 router.route('/:id')
   .get(getPostById)
   .delete(deletePost)
-  // .put(updatePost)
+// .put(updatePost)
 //   .put(likePost)
 
 
