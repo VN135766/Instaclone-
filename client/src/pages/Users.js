@@ -39,9 +39,9 @@ const Users = (props) => {
 
         <tbody>
           { allUsers.map( user => (
-            <tr key={user._id}>
+            <tr key={user.id}>
               <td>
-                <Link to={`/user/${user._id}`}>
+                <Link to={`/user/${user.id}`}>
                   {user.username}
                 </Link>
               </td>
