@@ -38,7 +38,12 @@ module.exports = {
   },
 
   signToken: function({ user_name, email, _id }) {
-    const payload = { user_name, email, _id };
+    const payload = { 
+      user_name, 
+      email, 
+      _id 
+    };
+    
     console.log("inside signToken")
     console.log("secret: ", jwtSecret)
     console.log("expiration: ",expiration)
