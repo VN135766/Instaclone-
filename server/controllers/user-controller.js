@@ -3,12 +3,8 @@ const jwt = require("jsonwebtoken")
 const cookie = require("cookie")
 const bcrypt = require("bcrypt")
 const connection = require("../config/connection")
+const { signToken, decodeToken } = require('../utils/auth');
 
-const dotenv = require("dotenv");
-dotenv.config()
-const jwtSecret = process.env.JWT_SECRET;
-// const jwtSecret = "top secret";
-console.log('process.env.JWT_SECRET: ',jwtSecret)
 
 const createUser = async ({ body }, res) => {
   await User.create(body)
@@ -16,6 +12,7 @@ const createUser = async ({ body }, res) => {
   .catch(err => res.status(400).json({ message: 'Unable to create user' }));
 }
   
+// get aall users
 const getAllUsers = async (req, res) => {
   console.log('getAllUsers Route called')
   try {
@@ -26,6 +23,7 @@ const getAllUsers = async (req, res) => {
   }
 }
 
+// get user by ID
 const getUserById = async (req, res) => {
   try {
     const getByIdQuery = await User.findById(req.params.id)
@@ -35,20 +33,27 @@ const getUserById = async (req, res) => {
   }
 }
 
+// login user
 const authenticateLogin = async (req, res) => {
+  console.log("entering login controller")
+
   // First see if we have a user with the supplied email address 
+  console.log("email: ", req.body.email)  // am i sending a valid email for logginin?
   const foundUser = await User.findOne({ email: req.body.email })
-  if( !foundUser ) return res.status(401).json({ message: "Login failed." })
+  if( !foundUser ) return res.status(401).json({ message: "Login failed - 1." })
 
   // Now compare the supplied password w/ the hashed password
   const isValid = await bcrypt.compare(req.body.password, foundUser.password)
   if( !isValid ) return res.status(401).json({ message: "Login failed." })
+  console.log("password verified")
 
-  // If we have a match, we will send back a token (line 43 extracts the password key from the foundUser object)
+  // If we have a match, we will send back a token (follwoing lineextracts the password key from the foundUser object)
   const { password, ...modifiedUser } = foundUser
 
+
   // Create a token to represent the authenticated user
-  const token = jwt.sign({ _id: foundUser._id, email: foundUser.email}, jwtSecret)
+  console.log("sending to signToken")
+  const token = signToken(foundUser)
 
   res
     .status(200)
@@ -56,26 +61,22 @@ const authenticateLogin = async (req, res) => {
     .json({ result: "success", user: modifiedUser, token: token })
 }
 
-const lookupUserByToken = async (req, res) => {
-  console.log("lookupUserByToken")
-  console.log("req.headers :",req.headers)
-  if( !req.headers || !req.headers.cookie ) return res.status(401).json({msg: "un-authorized - 1"})
+const lookupUserByToken = async ({ headers }, res) => {
+  console.log("Route: in controller: lookupUserByToken")
+  console.log("Token: ", headers.token)
 
-  // The node package named cookie will parse cookies for us
-  const cookies = cookie.parse(req.headers.cookie)
-
-  // Get the token from the request headers & decode it 
-  const token = cookies["auth-token"]  //cookies.authToken
-  if( !token ) return res.status(401).json({msg: "un-authorized - 2"})
+  // if( !req.headers || !req.headers.cookie ) return res.status(401).json({msg: "un-authorized - 1"})
+  if( !headers.token) return res.status(401).json({msg: "un-authorized - missing or expired token in req header"})
   
-  // Look up the user from the decoded token
-  const isVerified = jwt.verify(token, process.env.JWT_SECRET)
-  if( !isVerified ) return res.status(401).json({msg: "un-authorize - 3"})
+  const user = decodeToken(headers.token)
+  console.log("{ user }: ",user)
+  if (user.result === "error"){
+    return res.status(200).json({ result: user.result, errName: user.name, errMsg: user.message })
 
-  const user = await User.findById(isVerified._id)
-  if( !user ) return res.status(401).json({msg: "un-authorized - 4"})
+  } else {
+    return res.status(200).json({ result: user.result, _id: user._id, email: user.email, user_name: user.user_name } )
+  }
 
-  return res.status(200).json({ result: "success", payload: { _id: user._id, email: user.email } })
 }
 
 module.exports = { 

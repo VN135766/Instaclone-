@@ -3,15 +3,16 @@ const fs = require('fs');
 var path = require('path');
 
 
-// get all posts
-const getAllPosts = async (req, res) => {
-  try {
-    const getAllQuery = await Post.find({});
-    res.status(200).json({ result: "success", payload: getAllQuery });
-  } catch (err) {
-    res.status(400).json({ message: 'No posts found' });
+  // get all posts
+  const getAllPosts = async (req, res) => {
+    try {
+            // validate token
+      const getAllQuery = await Post.find({});
+      res.status(200).json({ result: "success", payload: getAllQuery });
+    } catch(err) {
+      res.status(400).json({ message: 'No posts found' });
+    }
   }
-}
 
 // get post by id
 const getPostById = async (req, res) => {

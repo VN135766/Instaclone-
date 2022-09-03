@@ -3,12 +3,15 @@ const dateFormat = require('../utils/dateFormat');
 const bcrypt = require("bcrypt")
 
 const UserSchema = new Schema({
-  fname: { type: String },
-  lname: { type: String },
+  user_name: { type: String },
   email: { type: String },
-  title: { type: String },
-  salary: { type: Number },
-  password: { type: String }
+  password: { type: String },
+  following: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'User'
+    }
+  ]
 });
 
 UserSchema.pre("save", async function(next) {
