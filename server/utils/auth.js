@@ -57,7 +57,7 @@ module.exports = {
         }
         return err
       } else {
-        // decoded.data.result="success"
+        decoded.result="success"
         return decoded
       }
     })
