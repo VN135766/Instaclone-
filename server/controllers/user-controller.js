@@ -70,15 +70,15 @@ const lookupUserByToken = async ({ headers }, res) => {
   
   const user = decodeToken(headers.token)
 
-  if (user.result === 'error'){
+  if (!user){
     console.log("error: ",user)
-    return res.status(200).json({ result: "error", err_name: user.name, err_msg: user.message })
+    return res.status(200).json({ result: "error", payload: { _id: user._id, email: user.email } })
 
   } else {
     console.log("success: ", user)
-    return res.status(200).json({ result: "success", _id: user._id, email: user.email, user_name: user.user_name })
+    return res.status(200).json({ result: "success", payload: { _id: user._id, email: user.email, user_name: user.user_name } })
   }
-// **********
+
   
   // // Look up the user from the decoded token
   // const isVerified = jwt.verify(token, process.env.JWT_SECRET)
