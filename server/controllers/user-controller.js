@@ -3,21 +3,7 @@ const jwt = require("jsonwebtoken")
 const cookie = require("cookie")
 const bcrypt = require("bcrypt")
 const connection = require("../config/connection")
-const { signToken } = require('../utils/auth');
-
-
-
-
-// may not need this???
-const dotenv = require("dotenv");
-dotenv.config()
-
-// jwt token config
-const jwtSecret = process.env.JWT_SECRET;
-const tokenExpiration = '200h';
-
-
-
+const { signToken, decodeToken } = require('../utils/auth');
 
 
 const createUser = async ({ body }, res) => {
@@ -49,34 +35,25 @@ const getUserById = async (req, res) => {
 
 // login user
 const authenticateLogin = async (req, res) => {
+  console.log("entering login controller")
+
   // First see if we have a user with the supplied email address 
+  console.log("email: ", req.body.email)  // am i sending a valid email for logginin?
   const foundUser = await User.findOne({ email: req.body.email })
-  if( !foundUser ) return res.status(401).json({ message: "Login failed." })
+  if( !foundUser ) return res.status(401).json({ message: "Login failed - 1." })
 
   // Now compare the supplied password w/ the hashed password
   const isValid = await bcrypt.compare(req.body.password, foundUser.password)
   if( !isValid ) return res.status(401).json({ message: "Login failed." })
+  console.log("password verified")
 
   // If we have a match, we will send back a token (follwoing lineextracts the password key from the foundUser object)
   const { password, ...modifiedUser } = foundUser
 
+
   // Create a token to represent the authenticated user
+  console.log("sending to signToken")
   const token = signToken(foundUser)
-
-
-
-  
-  // this is gary's stuuff... delete if new stuff works
-  // const token = jwt.sign(
-  //   {
-  //     _id: foundUser._id, 
-  //     email: foundUser.email
-  //   }, 
-  //   jwtSecret,
-  //   {
-  //     expiresIn: tokenExpiration
-  //   }
-  // )
 
   res
     .status(200)
@@ -84,31 +61,34 @@ const authenticateLogin = async (req, res) => {
     .json({ result: "success", user: modifiedUser, token: token })
 }
 
-const lookupUserByToken = async (req, res) => {
-  console.log("Route Works: in controller: lookupUserByToken")
-  console.log("headers: ",req.headers)
-  console.log("headers: ",!req.headers )
-  console.log("cookie: ", !req.headers.cookie)
-  // console.log("req.headers :",req.headers)
-  if( !req.headers || !req.headers.cookie ) return res.status(401).json({msg: "un-authorized - 1"})
+const lookupUserByToken = async ({ headers }, res) => {
+  console.log("Route: in controller: lookupUserByToken")
+  // console.log("Token: ", headers.token)
 
-  // The node package named cookie will parse cookies for us
-  const cookies = cookie.parse(req.headers.cookie)
-  console.log("cookies: ", cookies)
-
-  // Get the token from the request headers & decode it 
-
-  const token = cookies["auth-token"]  //cookies.authToken
-  if( !token ) return res.status(401).json({msg: "un-authorized - 2"})
+  // if( !req.headers || !req.headers.cookie ) return res.status(401).json({msg: "un-authorized - 1"})
+  if( !headers.token) return res.status(401).json({msg: "un-authorized - missing or expired token in req header"})
   
-  // Look up the user from the decoded token
-  const isVerified = jwt.verify(token, process.env.JWT_SECRET)
-  if( !isVerified ) return res.status(401).json({msg: "un-authorize - 3"})
+  const user = decodeToken(headers.token)
 
-  const user = await User.findById(isVerified._id)
-  if( !user ) return res.status(401).json({msg: "un-authorized - 4"})
+  if (!user){
+    console.log("error: ",user)
+    return res.status(200).json({ result: "error", payload: { _id: user._id, email: user.email } })
+
+  } else {
+    console.log("success: ", user)
+    return res.status(200).json({ result: "success", payload: { _id: user._id, email: user.email, user_name: user.user_name } })
+  }
+
+  
+  // // Look up the user from the decoded token
+  // const isVerified = jwt.verify(token, process.env.JWT_SECRET)
+  // if( !isVerified ) return res.status(401).json({msg: "un-authorize - 3"})
+
+  // const user = await User.findById(isVerified._id)
+  // if( !user ) return res.status(401).json({msg: "un-authorized - 4"})
 
   return res.status(200).json({ result: "success", payload: { _id: user._id, email: user.email } })
+  // return res.status(200).json({ result: "success", payload: { token: headers.token } })
 }
 
 module.exports = { 
