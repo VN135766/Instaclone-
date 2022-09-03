@@ -1,14 +1,12 @@
 import React from 'react'
 import '../post.css'
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
 
-function Post({ username, caption, imageurl }) {
+function Post({ username, caption, imageUrl }) {
     return (
         <div className='post'>
             <h3 className='post_username'>{username}</h3>
 
-            <img className='post_img' src={imageurl}></img>
+            <img className='post_img' src={imageUrl}></img>
 
             <h4 className='post_comment'><strong>{username}: </strong>{caption}</h4>
         </div>

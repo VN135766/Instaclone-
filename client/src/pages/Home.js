@@ -1,8 +1,19 @@
-import Button from 'react-bootstrap/Button'
-import Card from 'react-bootstrap/Card'
+import React, {useState} from 'react'
 import Post from './Post'
 
 const Home = (props) => {
+  const [posts, setPosts] = useState([
+    {
+      username: "placeholder",
+      caption: "Placeholder Caption",
+      imageUrl: "https://cdn-media-1.freecodecamp.org/images/1*qUlxDdY3T-rDtJ4LhLGkEg.png",
+    },
+    {
+      username: "placeholder",
+      caption: "Placeholder Caption",
+      imageUrl: "https://cdn-media-1.freecodecamp.org/images/1*qUlxDdY3T-rDtJ4LhLGkEg.png",
+    },
+  ])
   
   return (
     <div>
@@ -11,12 +22,15 @@ const Home = (props) => {
       { props.authUser && props.authUser.email !== undefined && (
         <p>We have a logged in user: { props.authUser.email } </p>
       )}
+
       <section>
 
-        <Post username={'Placeholder'} caption={"Placeholder caption"} imageurl={"https://cdn-media-1.freecodecamp.org/images/1*qUlxDdY3T-rDtJ4LhLGkEg.png"}/>
-        <Post username={'Placeholder'} caption={"Placeholder caption"} imageurl={"https://cdn-media-1.freecodecamp.org/images/1*qUlxDdY3T-rDtJ4LhLGkEg.png"}/>
-        <Post username={'Placeholder'} caption={"Placeholder caption"} imageurl={"https://cdn-media-1.freecodecamp.org/images/1*qUlxDdY3T-rDtJ4LhLGkEg.png"}/>
-        
+        {
+          posts.map(post => (
+            <Post username={post.username} caption={post.caption} imageUrl={post.imageUrl}/>
+          ))
+        }
+ 
       </section>
     </div>
   )
