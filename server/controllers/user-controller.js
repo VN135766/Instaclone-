@@ -16,6 +16,7 @@ const createUser = async ({ body }, res) => {
   .catch(err => res.status(400).json({ message: 'Unable to create user' }));
 }
   
+// get aall users
 const getAllUsers = async (req, res) => {
   console.log('getAllUsers Route called')
   try {
@@ -26,6 +27,7 @@ const getAllUsers = async (req, res) => {
   }
 }
 
+// get user by ID
 const getUserById = async (req, res) => {
   try {
     const getByIdQuery = await User.findById(req.params.id)
@@ -35,6 +37,7 @@ const getUserById = async (req, res) => {
   }
 }
 
+// login user
 const authenticateLogin = async (req, res) => {
   // First see if we have a user with the supplied email address 
   const foundUser = await User.findOne({ email: req.body.email })
