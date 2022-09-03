@@ -33,7 +33,6 @@ const Users = (props) => {
         <thead>
           <tr>
             <th>Username</th>
-            <th>Email</th>
             <th></th>
           </tr>
         </thead>
@@ -46,7 +45,6 @@ const Users = (props) => {
                   {user.username}
                 </Link>
               </td>
-              <td>{user.email}</td>
               <td><Button variant="outline-danger">Unfollow</Button>{' '}</td>
             </tr>
           ))}
