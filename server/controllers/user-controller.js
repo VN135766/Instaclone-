@@ -63,7 +63,7 @@ const authenticateLogin = async (req, res) => {
 
 const lookupUserByToken = async ({ headers }, res) => {
   console.log("Route: in controller: lookupUserByToken")
-  // console.log("Token: ", headers.token)
+  console.log("Token: ", headers.token)
 
   // if( !req.headers || !req.headers.cookie ) return res.status(401).json({msg: "un-authorized - 1"})
   if( !headers.token) return res.status(401).json({msg: "un-authorized - missing or expired token in req header"})

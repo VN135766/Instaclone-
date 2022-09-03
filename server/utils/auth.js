@@ -5,7 +5,7 @@ const dotenv = require("dotenv");
 dotenv.config()
 
 // const jwtSecret = process.env.JWT_SECRET;
-const jwtSecret = "topSecret";
+const jwtSecret = "Pyc9X6W7iPxou&caFYdDP";
 
 const expiration = '200h';
 
