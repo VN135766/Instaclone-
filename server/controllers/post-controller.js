@@ -1,16 +1,28 @@
 const { Post } = require('../models');
 const fs = require('fs');
 var path = require('path');
+const { decodeToken } = require('../utils/auth')
+
+// dummy token data used for testing
+const { devToken, devBadToken } = require('../utils/devToken')
+
 
 
   // get all posts
   const getAllPosts = async (req, res) => {
-    try {
-            // validate token
-      const getAllQuery = await Post.find({});
-      res.status(200).json({ result: "success", payload: getAllQuery });
-    } catch(err) {
-      res.status(400).json({ message: 'No posts found' });
+    const user = decodeToken(devToken)
+    if(user.valid){
+      console.log("A token was passed in the request")
+      console.log("user name: ", user.user_name)
+      try {
+              // validate token
+        const getAllQuery = await Post.find({});
+        res.status(200).json({ result: "success", payload: getAllQuery });
+      } catch(err) {
+        res.status(400).json({ message: 'No posts found' });
+      }
+    } else {
+      res.status(401).json({message: "UnAuthorized - invalid token"})
     }
   }
 
