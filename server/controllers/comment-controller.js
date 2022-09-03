@@ -1,18 +1,17 @@
-const { Comment } = require('../models');
+const { Comment, Post } = require('../models');
 
   // add comment
   const addComment = async ({ params, body }, res) => {
-    console.log(params)
-    console.log(body)
+    //console.log(params)
+    //console.log(body)
     await Comment.create(body)
-    // .then(({ _id }) => {
-    //   conosle.log(Post)
-    //   return Post.findByIdAndUpdate(
-    //     { _id: params.postId },
-    //     { $push: { comments: _id } },
-    //     { new: true }
-    //   );
-    // })
+    .then(({ _id }) => {
+      return Post.findByIdAndUpdate(
+        { _id: params.postId },
+        { $push: { comments: _id } },
+        { new: true }
+      );
+    })
     .then(dbCommentData => {
       console.log(dbCommentData)
       if(!dbCommentData) {
@@ -21,7 +20,7 @@ const { Comment } = require('../models');
       }
       res.json(dbCommentData);
     })
-    .catch(err => res.status(400).json({ message: 'Unable to create comment' }));
+    //.catch(err => res.status(400).json({ message: 'Unable to create comment' }));
   }
 
 
