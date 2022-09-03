@@ -4,6 +4,7 @@ const { Post } = require('../models');
   // get all posts
   const getAllPosts = async (req, res) => {
     try {
+      // validate token
       const getAllQuery = await Post.find({});
       res.status(200).json({ result: "success", payload: getAllQuery });
     } catch(err) {

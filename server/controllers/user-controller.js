@@ -3,12 +3,22 @@ const jwt = require("jsonwebtoken")
 const cookie = require("cookie")
 const bcrypt = require("bcrypt")
 const connection = require("../config/connection")
+const { signToken } = require('../utils/auth');
 
+
+
+
+// may not need this???
 const dotenv = require("dotenv");
 dotenv.config()
+
+// jwt token config
 const jwtSecret = process.env.JWT_SECRET;
-// const jwtSecret = "top secret";
-console.log('process.env.JWT_SECRET: ',jwtSecret)
+const tokenExpiration = '200h';
+
+
+
+
 
 const createUser = async ({ body }, res) => {
   await User.create(body)
@@ -47,11 +57,26 @@ const authenticateLogin = async (req, res) => {
   const isValid = await bcrypt.compare(req.body.password, foundUser.password)
   if( !isValid ) return res.status(401).json({ message: "Login failed." })
 
-  // If we have a match, we will send back a token (line 43 extracts the password key from the foundUser object)
+  // If we have a match, we will send back a token (follwoing lineextracts the password key from the foundUser object)
   const { password, ...modifiedUser } = foundUser
 
   // Create a token to represent the authenticated user
-  const token = jwt.sign({ _id: foundUser._id, email: foundUser.email}, jwtSecret)
+  const token = signToken(foundUser)
+
+
+
+  
+  // this is gary's stuuff... delete if new stuff works
+  // const token = jwt.sign(
+  //   {
+  //     _id: foundUser._id, 
+  //     email: foundUser.email
+  //   }, 
+  //   jwtSecret,
+  //   {
+  //     expiresIn: tokenExpiration
+  //   }
+  // )
 
   res
     .status(200)
@@ -60,14 +85,19 @@ const authenticateLogin = async (req, res) => {
 }
 
 const lookupUserByToken = async (req, res) => {
-  console.log("lookupUserByToken")
-  console.log("req.headers :",req.headers)
+  console.log("Route Works: in controller: lookupUserByToken")
+  console.log("headers: ",req.headers)
+  console.log("headers: ",!req.headers )
+  console.log("cookie: ", !req.headers.cookie)
+  // console.log("req.headers :",req.headers)
   if( !req.headers || !req.headers.cookie ) return res.status(401).json({msg: "un-authorized - 1"})
 
   // The node package named cookie will parse cookies for us
   const cookies = cookie.parse(req.headers.cookie)
+  console.log("cookies: ", cookies)
 
   // Get the token from the request headers & decode it 
+
   const token = cookies["auth-token"]  //cookies.authToken
   if( !token ) return res.status(401).json({msg: "un-authorized - 2"})
   
