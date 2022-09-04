@@ -3,9 +3,21 @@ const dateFormat = require('../utils/dateFormat');
 const bcrypt = require("bcrypt")
 
 const UserSchema = new Schema({
-  user_name: { type: String },
-  email: { type: String },
-  password: { type: String },
+  user_name: {
+    type: String,
+    require: true,
+    unique: true,
+  },
+  email: {
+    type: String,
+    require: true,
+    unique: true,
+    match: [/.+@.+\..+/, 'Must use a valid email address'],
+  },
+  password: {
+    type: String,
+    require: true
+  },
   following: [
     {
       type: Schema.Types.ObjectId,
@@ -14,7 +26,7 @@ const UserSchema = new Schema({
   ]
 });
 
-UserSchema.pre("save", async function(next) {
+UserSchema.pre("save", async function (next) {
   this.password = await bcrypt.hash(this._doc.password, 10)
   next();
 });
