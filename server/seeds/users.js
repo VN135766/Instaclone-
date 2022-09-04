@@ -2,11 +2,11 @@ const User = require("../models/User")
 const connection = require("../config/connection")
 
 const seedUsers = [
-  { fname: "Mary", lname: "Smith", email: "msmith@gmail.com", password: "msmith", title: "President", salary: 145000 },
-  { fname: "John", lname: "Doe", email: "jdoe@gmail.com", password: "jdoe", title: "VP", salary: 120000 },
-  { fname: "Ralph", lname: "Jones", email: "rjones@gmail.com", password: "rjones", title: "Asst VP", salary: 105000 },
-  { fname: "Harriet", lname: "Miles", email: "hmiles@gmail.com", password: "hmiles", title: "Sales Mgr", salary: 90000 },
-  { fname: "Bre", lname: "Schmidt", email: "bschmidt@gmail.com", password: "bschmidt", title: "Bottle Washer", salary: 5000 }
+  { user_name: "Fat Albert", email: "fa@gmail.com", password: "fa123" },
+  { user_name: "Brett Favre", email: "bf@gmail.com", password: "bf123" },
+  { user_name: "Ben Dover", email: "bd@gmail.com", password: "bd123" },
+  { user_name: "Ace Ventura", email: "av@gmail.com", password: "av123" },
+  { user_name: "Cartman", email: "c@gmail.com", password: "c123" }
 ]
 
 const seed = async () => {

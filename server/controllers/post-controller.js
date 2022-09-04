@@ -10,13 +10,20 @@ const { devToken, devBadToken } = require('../utils/devToken')
 
   // get all posts
   const getAllPosts = async (req, res) => {
+    console.log("====================")
+    console.log("getAllPosts function")
+
     const user = decodeToken(devToken)
+    console.log(user)
     if(user.valid){
       console.log("A token was passed in the request")
       console.log("user name: ", user.user_name)
       try {
-              // validate token
-        const getAllQuery = await Post.find({});
+        const getAllQuery = await Post.find({})
+        .populate({
+          path: 'comments',
+          select: '-__v'
+        })
         res.status(200).json({ result: "success", payload: getAllQuery });
       } catch(err) {
         res.status(400).json({ message: 'No posts found' });
@@ -30,6 +37,10 @@ const { devToken, devBadToken } = require('../utils/devToken')
 const getPostById = async (req, res) => {
   try {
     const getByIdQuery = await Post.findById(req.params.id)
+    .populate({
+      path: 'comments',
+      select: '-__v'
+    })
     res.status(200).json({ result: "success", payload: getByIdQuery })
   } catch (err) {
     res.status(400).json({ result: "fail", message: 'No post found by that id' })

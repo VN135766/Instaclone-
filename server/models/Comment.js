@@ -32,7 +32,7 @@ const CommentSchema = new Schema(
 );
 
 CommentSchema.virtual('likeCount').get(function() {
-  return this.comments.likes.length;
+  return this.likes.length;
 });
 
 const Comment = model("Comment", CommentSchema);
