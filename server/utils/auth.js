@@ -11,7 +11,7 @@ const expiration = '200h';
 
 console.log("creating a new token now")
 module.exports = {
-  authMiddleware: function({ req }) {
+  authMiddleware: function(req) {
     // allows token to be sent via req.body, req.query, or headers
     let token = req.body.token || req.query.token || req.headers.authorization;
 
@@ -24,11 +24,11 @@ module.exports = {
     }
 
     if (!token) {
-      return req;
+      return false;
     }
 
     try {
-      const { data } = jwt.verify(token, jwtSecret, { maxAge: expiration });
+      const data = jwt.verify(token, jwtSecret, { maxAge: expiration });
       req.user = data;
     } catch {
       console.log('Invalid token');
