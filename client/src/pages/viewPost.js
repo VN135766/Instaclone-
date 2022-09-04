@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import Post from './Post';
 import Comment from './Comment'
+import Form from 'react-bootstrap/Form'
+import Button from 'react-bootstrap/Button'
 
 
 const UserComment = (props) => {
@@ -8,12 +10,16 @@ const UserComment = (props) => {
       {
         id: 1,
         username: "placeholder",
-        caption: "Placeholder comment",
-      },
+        comment: "Placeholder comment",
+      }
+    ])
+
+    const [posts, setPosts] = useState([
       {
-        id: 2,
-        username: "placeholder 2",
-        caption: "Placeholder comment",
+        id: 1,
+        username: 'placeholder',
+        caption: 'placeholder caption',
+        imageUrl: "https://cdn-media-1.freecodecamp.org/images/1*qUlxDdY3T-rDtJ4LhLGkEg.png"
       }
     ])
     
@@ -25,13 +31,32 @@ const UserComment = (props) => {
         )}
   
         <section>
-  
+
+          {
+          posts.map(post => (
+            <Post key={post.id} username={post.username} caption={post.caption} imageUrl={post.imageUrl}/>
+          ))
+          }
+
           {
             comments.map(comment => (
-              <Comment key={comment.id} username={comment.username} caption={comment.caption}/>
+              <Comment key={comment.id} username={comment.username} caption={comment.comment}/>
             ))
           }
-   
+
+          <div>
+          <Form>
+           <Form.Group className="mb-3" controlId="formBasicComment">
+              <Form.Label>Comment</Form.Label>
+              <Form.Control type="text" placeholder="Enter Comment" />
+           </Form.Group>
+
+            <Button variant="primary" type="submit">
+             Post
+            </Button>
+          </Form>
+          </div>
+
         </section>
       </div>
     )
