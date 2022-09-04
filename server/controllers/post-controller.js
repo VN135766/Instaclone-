@@ -78,6 +78,10 @@ const getPostById = async (req, res) => {
         path: 'comments',
         select: '-__v'
       })
+      .populate({
+        path: 'createdBy',
+        select: '-__v'
+      })
       res.status(200).json({ result: "success", payload: getByIdQuery })
     } catch (err) {
       res.status(400).json({ result: "fail", message: 'No post found by that id' })
