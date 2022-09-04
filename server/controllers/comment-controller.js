@@ -1,6 +1,7 @@
 const { Comment, Post } = require('../models');
 const { findById } = require('../models/User');
-const { decodeToken } = require('../utils/auth')
+const { decodeToken } = require('../utils/auth');
+const likes = require('../utils/likes');
 
 // dummy token data used for testing
 const { devToken } = require('../utils/devToken')
@@ -51,38 +52,34 @@ const { devToken } = require('../utils/devToken')
     console.log("=======================")
     console.log("like/unlike comment controller")
 
-    const user = decodeToken(devToken)
-    console.log("{ user }: ",user)
-
+    if (testStatus){ 
+      var token = devToken
+    } else {
+      if( !req.headers.token) {
+        return res.status(401)
+        .json({msg: "un-authorized - missing or expired token in req header"})
+      }
+      let token = req.headers.token
+    }
+    const user = decodeToken(token)
     if(user.valid){
-      console.log("user is VALID")
-      // check to see if user ID is in comemnt list
       try {
-        console.log("comment id:" , params.id)
         const getByIdQuery = await Comment.findById(params.id)
-        console.log(getByIdQuery)
-
+        console.log("likes: ",getByIdQuery.likes)
+        console.log("user: ", user._id)
+        likes.update(getByIdQuery.likes, user._id)
         res.status(200).json({ result: "success", payload: getByIdQuery })
-
-      } catch (err) {
+      } catch(err) {
         res.status(400).json({ result: "fail", message: 'No comment found by that id' })
       }
-
-
-      // if user ID already in list...
-
-      // if user ID NOT in list
-      
     } else {
       res.status(401).json({message: "UnAuthorized - invalid token"})
     }
-    
     }
 
-    const getCommentById = async (req, res) => {
+    const getCommentById = async ({ params }, res) => {
     console.log("====================")
     console.log("getCommentById function")
-    console.log("params.id: ",req)
 
     if (testStatus){ 
       var token = devToken
@@ -96,7 +93,7 @@ const { devToken } = require('../utils/devToken')
     const user = decodeToken(token)
     if(user.valid){
       try {
-        const getByIdQuery = await Comment.findById(req.params.id)
+        const getByIdQuery = await Comment.findById(params.id)
         res.status(200).json({ result: "success", payload: getByIdQuery })
       } catch(err) {
         res.status(400).json({ result: "fail", message: 'No comment found by that id' })

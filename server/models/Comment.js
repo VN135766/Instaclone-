@@ -14,6 +14,7 @@ const CommentSchema = new Schema(
     },
     likes: [{
       type: String,
+      unique: true,
       ref: "User"
     }],
     createdAt: {

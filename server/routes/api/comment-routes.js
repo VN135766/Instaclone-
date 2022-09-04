@@ -12,11 +12,12 @@ router.route('/')
   .get(getAllComments)
 
 // /api/comment/<postId>
-router.route('/:Id')
+router.route('/:id')
   .post(addComment)
   .get(getCommentById)
-  .put(likeComment)  
 
+  router.route('/like/:id')
+  .put(likeComment)  
 
 // /api/comments/<postId>/<commentId>
 // router.route('/:postId/:commentId')
