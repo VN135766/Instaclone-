@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import Container from "react-bootstrap/Container"
 import Home from "./pages/Home"
 import Post from "./pages/Post"
+import viewPost from "./pages/viewPost"
 import Users from "./pages/Users"
 import User from "./pages/User"
 import Login from "./pages/Login"
@@ -33,6 +34,7 @@ function App() {
           <Navigation />
           <Routes>
             <Route path="/" element={<Home authUser={ authUser } />} />
+            <Route path="/viewPost" element={<viewPost authUser={ authUser } />} />
             <Route path="/login" element={<Login />} />
             <Route path="/users" element={<Users />} />
             <Route path="/user">
