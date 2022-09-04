@@ -12,7 +12,7 @@ const createUser = async ({ body }, res) => {
   .catch(err => res.status(400).json({ message: 'Unable to create user' }));
 }
   
-// get aall users
+// get all users
 const getAllUsers = async (req, res) => {
   console.log('getAllUsers Route called')
   try {

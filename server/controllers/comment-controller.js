@@ -3,7 +3,7 @@ const { findById } = require('../models/User');
 const { decodeToken } = require('../utils/auth')
 
 // dummy token data used for testing
-const { devToken, devBadToken } = require('../utils/devToken')
+const { devToken } = require('../utils/devToken')
 
 
   // add comment
@@ -32,13 +32,24 @@ const { devToken, devBadToken } = require('../utils/devToken')
     //.catch(err => res.status(400).json({ message: 'Unable to create comment' }));
   }
 
+  // get ALL Comments
+  const getAllComments = async (req, res) => {
+    console.log('getAllComments method called')
+    try {
+      const getAllQuery = await Comment.find({});
+      res.status(200).json({ result: "success", payload: getAllQuery });
+    } catch(err) {
+      res.status(400).json({ message: 'No users found' });
+    }
+  }
+
   // add / remove "like" for a comment
   // check list of user IDs in the like field
   //  - if user ID is not in the list, add it
   //  - if user ID is in the list, delete it
   const likeComment = async ( { params, body }, res) => {
     console.log("=======================")
-    console.log("like/ulike comment controller")
+    console.log("like/unlike comment controller")
 
     const user = decodeToken(devToken)
     console.log("{ user }: ",user)
@@ -47,9 +58,12 @@ const { devToken, devBadToken } = require('../utils/devToken')
       console.log("user is VALID")
       // check to see if user ID is in comemnt list
       try {
+        console.log("comment id:" , params.id)
         const getByIdQuery = await Comment.findById(params.id)
+        console.log(getByIdQuery)
 
         res.status(200).json({ result: "success", payload: getByIdQuery })
+
       } catch (err) {
         res.status(400).json({ result: "fail", message: 'No comment found by that id' })
       }
@@ -69,5 +83,6 @@ const { devToken, devBadToken } = require('../utils/devToken')
 
 module.exports = {
   addComment,
-  likeComment
+  likeComment,
+  getAllComments
 }

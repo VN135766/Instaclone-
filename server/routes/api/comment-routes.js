@@ -1,15 +1,21 @@
 const router = require('express').Router();
 
 const { addComment, 
-        // deleteComment,
-        likeComment
+        likeComment,
+        getAllComments
 } = require('../../controllers/comment-controller');
+
+
+//  /api/comment/
+router.route('/')
+  .get(getAllComments)
 
 // /api/comment/<postId>
 router.route('/:postId')
   .post(addComment);
 
-router.route('/:commentId')
+  //  /api/commet/like:comemntId
+router.route('/like/:commentId')
   .put(likeComment)  
 
 // /api/comments/<postId>/<commentId>
