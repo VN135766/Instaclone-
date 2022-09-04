@@ -1,4 +1,4 @@
-const { Comment, Post } = require('../models');
+const { Comment, Post, User } = require('../models');
 const { findById } = require('../models/User');
 const { decodeToken } = require('../utils/auth');
 const likes = require('../utils/likes');
@@ -7,37 +7,72 @@ const likes = require('../utils/likes');
 const { devToken } = require('../utils/devToken')
 
 
-  // add comment
-  const addComment = async ({ params, body }, res) => {
-    // console.log("postId: ",params.postId)
-    // console.log("body: ",body)
-    await Comment.create(body)
-    .then(({ _id }) => {
-      // console.log("ID: ", _id)
-      // console.log("Posting comment to database")
 
-      return Post.findByIdAndUpdate(
-        { _id: params.postId },
-        { $push: { comments: _id } },
-        { new: true }
-      );
-    })
-    .then(dbCommentData => {
-      // console.log(dbCommentData)
-      if(!dbCommentData) {
-        res.status(404).json({message: 'No comment with this ID found'})
-        return;
-      }
-      res.json(dbCommentData);
-    })
-    //.catch(err => res.status(400).json({ message: 'Unable to create comment' }));
+
+// CREATE new comment
+const addComment = async ({ params, body }, res) => {
+  var createQuery={}
+
+  console.log("====================")
+  console.log("addComment function")
+
+  // check switch in ./utils/devToken to see if in test mode or not
+  if (testStatus){ 
+    var token = devToken
+  } else {
+    if( !req.headers.token) {
+      return res.status(401)
+      .json({msg: "un-authorized - missing or expired token in req header"})
+    }
+    let token = req.headers.token
   }
+
+  const user = decodeToken(token)
+  if(user.valid){
+
+    try {
+      console.log("postId: ", params.id)
+      console.log(body)
+      console.log("author: ", user.user_name)
+      console.log("user _id: ",user._id)
+      var obj = {
+        body: body.body,
+        author: user._id
+      }
+      createQuery = await Comment.create(
+        obj
+      );
+    } catch(err) {
+      res.status(400).json({ message: 'Unable to create comment' });
+    }
+    try{
+      const updatePostQuery = await Post.findByIdAndUpdate(
+        { _id: params.id },
+        { $push: { comments: createQuery._id } },
+        { new: true }
+      )
+      res.status(200).json({ result: "success", payload: createQuery })
+    } catch(err) {
+        res.status(404).json({message: 'No Post with this ID found'})
+    }
+    
+  } else {
+    res.status(401).json({message: "UnAuthorized - invalid token"})
+  }
+}
+
+
 
   // get ALL Comments
   const getAllComments = async (req, res) => {
     console.log('getAllComments method called')
     try {
-      const getAllQuery = await Comment.find({});
+      const getAllQuery = await Comment.find({})
+      .populate({
+        path: 'author',
+        select: ('user_name'),
+        select: '-__v'
+      })
       res.status(200).json({ result: "success", payload: getAllQuery });
     } catch(err) {
       res.status(400).json({ message: 'No users found' });
@@ -68,9 +103,11 @@ const { devToken } = require('../utils/devToken')
     // decode the token and check if valid user
     const user = decodeToken(token)
     if(user.valid){
+
+      var getByIdQuery = {}
       // first, find the comment being updated
       try {
-        const getByIdQuery = await Comment.findById(params.id)
+        getByIdQuery = await Comment.findById(params.id)
       } catch(err) {
         res.status(400).json({ result: "fail", message: 'No comment found by that id' })
       }
@@ -82,8 +119,10 @@ const { devToken } = require('../utils/devToken')
         // everything works up to here
         // I'm not sure how to get 'array' back in to the comment record
 
+        console.log("about to update the comments recoed with these values...")
         console.log("id: ", params.id)
         console.log("array: ", array)
+        console.log("...")
         // update the comment in the db with the new array
         const updatedLikesArray = await Comment.findByIdAndUpdate(
           { _id: params.id },
@@ -117,6 +156,11 @@ const { devToken } = require('../utils/devToken')
     if(user.valid){
       try {
         const getByIdQuery = await Comment.findById(params.id)
+        .populate({
+          path: 'author',
+          select: ('user_name'),
+          select: '-__v'
+        })
         res.status(200).json({ result: "success", payload: getByIdQuery })
       } catch(err) {
         res.status(400).json({ result: "fail", message: 'No comment found by that id' })

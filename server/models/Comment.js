@@ -13,9 +13,9 @@ const CommentSchema = new Schema(
       trim: true
     },
     likes: [{
-      type: String,
-      unique: true,
-      ref: "User"
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      unique: true
     }],
     createdAt: {
       type: Date,
