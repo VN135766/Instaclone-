@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Post from './Post';
 import Comment from './Comment'
 
+
 const UserComment = (props) => {
     const [comments, setComments] = useState([
       {
