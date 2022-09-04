@@ -45,13 +45,16 @@ const { devToken } = require('../utils/devToken')
   }
 
   // add / remove "like" for a comment
-  // check list of user IDs in the like field
+  // first comment to be updated
+  // then check the list of user IDs in that comments like field/array
   //  - if user ID is not in the list, add it
   //  - if user ID is in the list, delete it
+  // then update the database to hold the new array of likes
   const likeComment = async ( { params, body }, res) => {
     console.log("=======================")
     console.log("like/unlike comment controller")
 
+    // select to use a test toke or an actual token in the header
     if (testStatus){ 
       var token = devToken
     } else {
@@ -61,14 +64,26 @@ const { devToken } = require('../utils/devToken')
       }
       let token = req.headers.token
     }
+
+    // decode the token and check if valid user
     const user = decodeToken(token)
     if(user.valid){
       try {
+        // find the comment being updated
         const getByIdQuery = await Comment.findById(params.id)
-        console.log("likes: ",getByIdQuery.likes)
-        console.log("user: ", user._id)
-        likes.update(getByIdQuery.likes, user._id)
-        res.status(200).json({ result: "success", payload: getByIdQuery })
+        
+        // send likes array from selected comment out for processing
+        const array = likes.update(getByIdQuery.likes, user._id)
+        // everything works up to here
+        // I'm not sure how to get 'array' back in to the comment record
+
+        // update the cpmment in the db with the new array
+        const updatedLikesArray = await Comment.findByIdAndUpdate(
+          { _id: params.postId },
+          { likes: array },
+          { new: true }
+        );
+        res.status(200).json({ result: "success", payload: updatedLikesArray })
       } catch(err) {
         res.status(400).json({ result: "fail", message: 'No comment found by that id' })
       }
