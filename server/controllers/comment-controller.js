@@ -68,24 +68,30 @@ const { devToken } = require('../utils/devToken')
     // decode the token and check if valid user
     const user = decodeToken(token)
     if(user.valid){
+      // first, find the comment being updated
       try {
-        // find the comment being updated
         const getByIdQuery = await Comment.findById(params.id)
-        
+      } catch(err) {
+        res.status(400).json({ result: "fail", message: 'No comment found by that id' })
+      }
+
+      // now process the array of likes and update the database
+      try {
         // send likes array from selected comment out for processing
         const array = likes.update(getByIdQuery.likes, user._id)
         // everything works up to here
         // I'm not sure how to get 'array' back in to the comment record
 
-        // update the cpmment in the db with the new array
+        // update the comment in the db with the new array
         const updatedLikesArray = await Comment.findByIdAndUpdate(
           { _id: params.postId },
-          { likes: array },
-          { new: true }
-        );
+          { likes: array }
+        )
+        console.log("updatedLikesArray:",updatedLikesArray)
+        
         res.status(200).json({ result: "success", payload: updatedLikesArray })
       } catch(err) {
-        res.status(400).json({ result: "fail", message: 'No comment found by that id' })
+
       }
     } else {
       res.status(401).json({message: "UnAuthorized - invalid token"})
