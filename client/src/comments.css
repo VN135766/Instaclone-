@@ -2,6 +2,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 10px;
 }
 
 .comments {
@@ -9,7 +10,7 @@
     max-width: 500px;
     border: 1px solid lightgrey;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    margin-bottom: 45px;
+    margin-bottom: 0px;
 }
 
 .comment_username {
