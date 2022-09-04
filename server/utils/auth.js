@@ -53,7 +53,7 @@ module.exports = {
 
   decodeToken: (token) => {
     console.log("----------------")
-    console.log("decoded function")
+    console.log("decoded token")
     return jwt.verify(token, jwtSecret, function (err, decoded){
       console.log("decoded: ", decoded)
       if (err){

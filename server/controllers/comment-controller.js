@@ -79,10 +79,36 @@ const { devToken } = require('../utils/devToken')
     
     }
 
+    const getCommentById = async (req, res) => {
+    console.log("====================")
+    console.log("getCommentById function")
+    console.log("params.id: ",req)
 
+    if (testStatus){ 
+      var token = devToken
+    } else {
+      if( !req.headers.token) {
+        return res.status(401)
+        .json({msg: "un-authorized - missing or expired token in req header"})
+      }
+      let token = req.headers.token
+    }
+    const user = decodeToken(token)
+    if(user.valid){
+      try {
+        const getByIdQuery = await Comment.findById(req.params.id)
+        res.status(200).json({ result: "success", payload: getByIdQuery })
+      } catch(err) {
+        res.status(400).json({ result: "fail", message: 'No comment found by that id' })
+      }
+    } else {
+      res.status(401).json({message: "UnAuthorized - invalid token"})
+    }
+}
 
 module.exports = {
   addComment,
   likeComment,
-  getAllComments
+  getAllComments,
+  getCommentById
 }
