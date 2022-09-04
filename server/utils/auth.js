@@ -44,26 +44,28 @@ module.exports = {
       _id 
     };
 
-    console.log("inside signToken")
-    console.log("secret: ", jwtSecret)
-    console.log("expiration: ",expiration)
+    // console.log("inside signToken")
+    // console.log("secret: ", jwtSecret)
+    // console.log("expiration: ",expiration)
 
     return jwt.sign(payload, jwtSecret, { expiresIn: expiration });
   },
 
   decodeToken: (token) => {
-    // return ({ _id: "123", email: "rs@gmail.com" })
+    console.log("----------------")
+    console.log("decoded function")
     return jwt.verify(token, jwtSecret, function (err, decoded){
+      console.log("decoded: ", decoded)
       if (err){
         err = {
-          result: "error",
+          valid: "FALSE",
           name: "jwt token error",
           message: "invalid json web token"
         }
         return err
       } else {
-        decoded.data.result="success"
-        return decoded.data
+        decoded.valid="TRUE"
+        return decoded
       }
     })
   }
