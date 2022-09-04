@@ -82,16 +82,18 @@ const { devToken } = require('../utils/devToken')
         // everything works up to here
         // I'm not sure how to get 'array' back in to the comment record
 
+        console.log("id: ", params.id)
+        console.log("array: ", array)
         // update the comment in the db with the new array
         const updatedLikesArray = await Comment.findByIdAndUpdate(
-          { _id: params.postId },
+          { _id: params.id },
           { likes: array }
         )
         console.log("updatedLikesArray:",updatedLikesArray)
         
         res.status(200).json({ result: "success", payload: updatedLikesArray })
       } catch(err) {
-
+        res.status(400).json({ result: "fail", message: 'unable to update likes' })
       }
     } else {
       res.status(401).json({message: "UnAuthorized - invalid token"})
