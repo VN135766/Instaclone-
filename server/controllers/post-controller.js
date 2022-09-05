@@ -14,10 +14,8 @@ const { testStatus, devToken } = require('../utils/devToken')
     console.log("getAllPosts function")
 
     if (testStatus){ 
-      // if we are in test mode
       var token = devToken
     } else {
-      // must have a token in the header
       if( !req.headers.token) {
         return res.status(401)
         .json({msg: "un-authorized - missing or expired token in req header"})
@@ -39,8 +37,9 @@ const { testStatus, devToken } = require('../utils/devToken')
         })
         .populate({
           path: 'createdBy',
-          select: '-__v'
+          select: ('user_name')
         })
+        .sort({ createdAt: -1 })
         res.status(200).json({ result: "success", payload: getAllQuery });
       } catch(err) {
         res.status(400).json({ message: 'No posts found' });
