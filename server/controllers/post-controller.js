@@ -236,6 +236,6 @@ module.exports = {
   createPost,
   getPostById,
   deletePost,
-  getPostsByCreator
+  getPostsByCreator,
   likePost
 }

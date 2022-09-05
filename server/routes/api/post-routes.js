@@ -6,7 +6,7 @@ const {
   deletePost,
   getAllPosts,
   getPostById,
-  likePost
+  likePost,
   // updatePost,
   getPostsByCreator,
 } = require('../../controllers/post-controller.js');
