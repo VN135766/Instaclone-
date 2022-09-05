@@ -7,7 +7,7 @@ const {
   getAllPosts,
   getPostById,
   // updatePost,
-  // getPostsByCreator,
+  getPostsByCreator,
   // likePost
 } = require('../../controllers/post-controller.js');
 
@@ -30,6 +30,9 @@ router.route('/:id')
   .delete(deletePost)
 // .put(updatePost)
 //   .put(likePost)
+
+router.route('/user/:id')
+    .get(getPostsByCreator)
 
 
 // router.route('/:id/comment')

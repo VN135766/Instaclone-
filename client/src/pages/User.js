@@ -5,34 +5,36 @@ import Container from 'react-bootstrap/Container';
 import Stack from 'react-bootstrap/Stack';
 import Spinner from 'react-bootstrap/Spinner';
 
-import noAvatar from '../assets/images/noAvatar.svg'
 import UserWithImgs from '../components/UserWithImgs';
 
 const User = (props) => {
   // id is the name of the wildcard variable we specified in the route in App.js
   const { id } = useParams()
-  const [user, setUser] = useState(null)
-  const [loading, setLoading] = useState(true)
-  //const following;
+  const [posts, setPosts] = useState(null)
+  const [name, setName] = useState(null)
 
-  const fetchUser = async () => {
+  const fetchPosts = async () => {
+    const lookupQuery = await fetch(`/api/post/user/${id}`);
+    const parsedResponse = await lookupQuery.json();
+
+    if (parsedResponse.posts) {
+      setPosts(parsedResponse.posts); 
+    }
+  };
+
+  const fetchName = async () => {
     const lookupQuery = await fetch(`/api/user/${id}`);
     const parsedResponse = await lookupQuery.json();
 
-    if (parsedResponse.result === 'success') {
-      setUser(parsedResponse.payload);
-    }
+    setName(parsedResponse.payload.user_name)
+  }
 
-    //following = user.following;
-
-    setLoading(false);
-  };
-
-  useEffect( () => {
-    fetchUser();
+  useEffect(() => {
+    fetchPosts();
+    fetchName();
   }, []);
 
-  if (loading) {
+  if (!posts || !name) {
     return (
       <Container style={{
         display: 'flex',
@@ -46,122 +48,10 @@ const User = (props) => {
     );
   }
 
-  const following = [
-    {
-      name: 'Foo',
-      images: [
-        {
-          title: 'Bar',
-          caption: 'Caption',
-          tags: [
-            'lit',
-            'awesome',
-            'dope'
-          ],
-          src: noAvatar
-        },
-        {
-          title: 'Bar',
-          caption: 'Caption',
-          tags: [
-            'lit',
-            'awesome',
-            'dope'
-          ],
-          src: noAvatar
-        },
-        {
-          title: 'Bar',
-          caption: 'Caption',
-          tags: [
-            'lit',
-            'awesome',
-            'dope'
-          ],
-          src: noAvatar
-        }
-      ]
-    },
-    {
-      name: 'Foo',
-      images: [
-        {
-          title: 'Bar',
-          caption: 'Caption',
-          tags: [
-            'lit',
-            'awesome',
-            'dope'
-          ],
-          src: noAvatar
-        },
-        {
-          title: 'Bar',
-          caption: 'Caption',
-          tags: [
-            'lit',
-            'awesome',
-            'dope'
-          ],
-          src: noAvatar
-        },
-        {
-          title: 'Bar',
-          caption: 'Caption',
-          tags: [
-            'lit',
-            'awesome',
-            'dope'
-          ],
-          src: noAvatar
-        }
-      ]
-    },
-    {
-      name: 'Foo',
-      images: [
-        {
-          title: 'Bar',
-          caption: 'Caption',
-          tags: [
-            'lit',
-            'awesome',
-            'dope'
-          ],
-          src: noAvatar
-        },
-        {
-          title: 'Bar',
-          caption: 'Caption',
-          tags: [
-            'lit',
-            'awesome',
-            'dope'
-          ],
-          src: noAvatar
-        },
-        {
-          title: 'Bar',
-          caption: 'Caption',
-          tags: [
-            'lit',
-            'awesome',
-            'dope'
-          ],
-          src: noAvatar
-        }
-      ]
-    }
-  ];
-
   return (
     <Container style={{ paddingTop: '1em' }}>
-      <Stack gap={1}> 
-        {following.map((user) => {
-          return (
-            <UserWithImgs name={user.name} images={user.images}/>
-          )
-        })}
+      <Stack gap={1}>
+        <UserWithImgs posts={posts} name={name}/>
       </Stack>
     </Container>
   )
