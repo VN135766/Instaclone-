@@ -137,7 +137,7 @@ const addComment = async ({ params, body }, res) => {
     } else {
       res.status(401).json({message: "UnAuthorized - invalid token"})
     }
-    }
+  }
 
     const getCommentById = async ({ params }, res) => {
     console.log("====================")
