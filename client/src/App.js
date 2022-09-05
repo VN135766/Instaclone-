@@ -16,7 +16,8 @@ import Cookie from "js-cookie";
 import { Redirect } from "react-router-dom";
 // import { Post } from './components/Post';
 // import { Navigate } from "react-router-dom";
-
+import Signup from "./pages/Signup";
+import "./App.css"
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
@@ -60,6 +61,7 @@ function App() {
           <Route path="/" element={<Home authUser={authUser} />} />
 
           <Route path="/login" element={<Login authUser={authUser} />} />
+          <Route path="/signup" element={<Signup />} />
           {/* <Route path="/login" render={()=> <Login authUser={authUser} />} /> */}
           <Route path="/users" element={<Users />} />
 

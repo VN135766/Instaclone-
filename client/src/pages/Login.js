@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Cookie from "js-cookie";
 import { Alert, Button, Container, Form } from "react-bootstrap";
+import {Link,useHistory} from 'react-router-dom';
+
 
 const LoginPage = (props) => {
   const [loginCreds, setLoginCreds] = useState({ email: "", password: "" });
@@ -41,8 +43,10 @@ const LoginPage = (props) => {
   };
 
   return (
-    <Container style={{ padding: "50px 200px" }}>
-      <Form onSubmit={handleLogin}>
+    <Container className="mycard" style={{ padding: "50px 200px" }}>
+      
+      <Form className="card auth-card .input-field " onSubmit={handleLogin}>
+      <h2>Instaclone</h2>
         <Form.Group className="mb-3" controlId="email">
           <Form.Label>Email address</Form.Label>
           <Form.Control
@@ -69,9 +73,12 @@ const LoginPage = (props) => {
           />
         </Form.Group>
 
-        <Button variant="primary" type="submit">
+        <button variant="primary" type="submit" className="btn waves-effect waves-light">
           Submit
-        </Button>
+        </button>
+        <h5>
+          <Link to="/signup"> Don't have an account ?</Link>
+        </h5>
       </Form>
 
       {formMessage.msg.length > 0 && (
