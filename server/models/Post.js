@@ -8,8 +8,8 @@ const PostSchema = new Schema (
       required: true
     },
     image: {
-      data: Buffer,
-      contentType: String
+      type: String,
+      required: true
     },
     imageCaption: {
       type: String,
@@ -27,7 +27,7 @@ const PostSchema = new Schema (
     createdBy: {
       type: Schema.Types.ObjectId,
       ref: 'User',
-      // required: true
+      required: true
     },
     createdAt: {
       type: Date,
