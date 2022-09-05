@@ -1,0 +1,22 @@
+.comment_container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 10px;
+}
+
+.comments {
+    background-color: white;
+    max-width: 500px;
+    margin-bottom: 0px;
+}
+
+.comment_username {
+    padding: 10px
+}
+
+
+.comment_caption {
+    padding: 10px;
+    font-size: medium;
+}
