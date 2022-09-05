@@ -30,8 +30,6 @@ router.route('/:id')
   .get(getPostById)
   .delete(deletePost)
 // .put(updatePost)
-//   .put(likePost)
-
 
 // router.route('/:id/comment')
 
