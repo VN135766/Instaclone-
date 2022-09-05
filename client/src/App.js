@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
 import Home from "./pages/Home"
-//import Post from "./pages/Post"
+import Post from "./pages/Post"
+import ViewPost from "./pages/ViewPost"
 import Users from "./pages/Users"
 import User from "./pages/User"
 import Login from "./pages/Login"
@@ -28,6 +29,7 @@ function App() {
 
   return (
     <div>
+
       <Router>
         <Navigation />
         <Routes>

@@ -52,8 +52,8 @@ module.exports = {
   },
 
   decodeToken: (token) => {
-    console.log("----------------")
-    console.log("decoded function")
+    console.log("-----------------------")
+    console.log("decoding token...")
     return jwt.verify(token, jwtSecret, function (err, decoded){
       console.log("decoded: ", decoded)
       if (err){
@@ -64,6 +64,7 @@ module.exports = {
         }
         return err
       } else {
+        console.log("-----------------------")
         decoded.valid="TRUE"
         return decoded
       }

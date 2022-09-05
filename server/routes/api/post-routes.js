@@ -6,20 +6,21 @@ const {
   deletePost,
   getAllPosts,
   getPostById,
+  likePost
   // updatePost,
   getPostsByCreator,
-  // likePost
 } = require('../../controllers/post-controller.js');
 
 // /api/post
 router.route('/')
+  .get(getAllPosts)
   .post(
     upload.single('image'),
     createPost
   )
-  .get(getAllPosts)
 
-
+  router.route('/like/:id')
+  .put(likePost)  
 
 // router.route("/lookup")
 //   .get(getPostsByCreator)
@@ -29,11 +30,9 @@ router.route('/:id')
   .get(getPostById)
   .delete(deletePost)
 // .put(updatePost)
-//   .put(likePost)
 
 router.route('/user/:id')
     .get(getPostsByCreator)
-
 
 // router.route('/:id/comment')
 

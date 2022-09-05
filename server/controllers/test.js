@@ -7,7 +7,7 @@
 //    - USES A TESTING TOKEN WHEN IN TEST MODE
 
     console.log("====================")
-    console.log("getAllPosts function")
+    console.log("getCommentById function")
 
     // check switch in ./utils/devToken to see if in test mode or not
     if (testStatus){ 

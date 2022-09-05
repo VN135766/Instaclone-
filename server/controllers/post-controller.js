@@ -2,7 +2,7 @@ const { Post } = require('../models');
 const fs = require('fs');
 var path = require('path');
 const { decodeToken, authMiddleware } = require('../utils/auth')
-
+const likes = require('../utils/likes');
 // dummy token data used for testing
 const { testStatus, devToken } = require('../utils/devToken')
 
@@ -37,7 +37,7 @@ const getAllPosts = async (req, res) => {
         })
         .populate({
           path: 'createdBy',
-          select: '-__v'
+          select: ('user_name')
         })
       res.status(200).json({ result: "success", payload: getAllQuery });
     } catch (err) {
@@ -167,10 +167,75 @@ const deletePost = async (req, res) => {
   }
 }
 
+
+
+  // add / remove "like" for a post
+  // first post to be updated
+  // then check the list of user IDs in that post's like field/array
+  //  - if user ID is not in the list, add it
+  //  - if user ID is in the list, delete it
+  // then update the database to hold the new array of likes
+  const likePost = async ( { params, body }, res) => {
+    console.log("=======================")
+    console.log("like/unlike POST controller")
+
+    // select to use a test toke or an actual token in the header
+    if (testStatus){ 
+      var token = devToken
+    } else {
+      if( !req.headers.token) {
+        return res.status(401)
+        .json({msg: "un-authorized - missing or expired token in req header"})
+      }
+      let token = req.headers.token
+    }
+
+    // decode the token and check if valid user
+    const user = decodeToken(token)
+    if(user.valid){
+
+      var getByIdQuery = {}
+      // first, find the comment being updated
+      try {
+        getByIdQuery = await Post.findById(params.id)
+      } catch(err) {
+        res.status(400).json({ result: "fail", message: 'No comment found by that id' })
+      }
+
+      // now process the array of likes and update the database
+      try {
+        // send likes array from selected comment out for processing
+        const array = likes.update(getByIdQuery.likes, user._id)
+        // everything works up to here
+        // I'm not sure how to get 'array' back in to the comment record
+
+        console.log("about to update the comments recoed with these values...")
+        console.log("id: ", params.id)
+        console.log("array: ", array)
+        console.log("...")
+        // update the comment in the db with the new array
+        const updatedLikesArray = await Post.findByIdAndUpdate(
+          { _id: params.id },
+          { likes: array }
+        )
+        console.log("updatedLikesArray:",updatedLikesArray)
+        
+        res.status(200).json({ result: "success", payload: updatedLikesArray })
+      } catch(err) {
+        res.status(400).json({ result: "fail", message: 'unable to update likes' })
+      }
+    } else {
+      res.status(401).json({message: "UnAuthorized - invalid token"})
+    }
+  }
+
+
+
 module.exports = {
   getAllPosts,
   createPost,
   getPostById,
   deletePost,
   getPostsByCreator
+  likePost
 }
