@@ -20,8 +20,6 @@ router.route('/:id')
   .put(likeComment)  
 
 // /api/comments/<postId>/<commentId>
-// router.route('/:postId/:commentId')
-//   .put(likeComment)
 //   .delete(deleteComment);
 
   
