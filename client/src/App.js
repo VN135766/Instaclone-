@@ -8,7 +8,7 @@ import User from "./pages/User"
 import Login from "./pages/Login"
 import PageNotFound from "./pages/404"
 import Navigation from "./components/Navigation"
-import { Post } from './components/Post';
+//import { Post } from './components/Post';
 
 import "bootstrap/dist/css/bootstrap.min.css"
 
@@ -39,7 +39,9 @@ function App() {
 
           <Route path="/Post" element={<Post />} />
 
+          <Route path='/ViewPost' element={<ViewPost />} />
           <Route path="/user">
+            
             <Route path=":id" element={<User />} />
           </Route>
           <Route path="*" element={<PageNotFound />} />
