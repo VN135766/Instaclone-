@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Post from './Post';
 import Comment from './Comment'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
+import { useParams } from "react-router-dom";
 
 
 const UserComment = (props) => {
+    const { id } = useParams()
     const [comments, setComments] = useState([
       {
         id: 1,
@@ -22,6 +24,21 @@ const UserComment = (props) => {
         imageUrl: "https://cdn-media-1.freecodecamp.org/images/1*qUlxDdY3T-rDtJ4LhLGkEg.png"
       }
     ])
+
+    const getPost = async() => {
+      const lookupQuery = await fetch(`/api/post/${id}`, 
+      {
+        token: localStorage.getItem('token')
+      })
+      const parsedResponse = await lookupQuery.json()
+      if(parsedResponse.result === "success"){
+        setPosts(parsedResponse.payload)
+      }
+    }
+
+    useEffect(() => {
+      getPost()
+    })
     
     return (
       <div>
@@ -62,4 +79,5 @@ const UserComment = (props) => {
     )
   }
   
+
   export default UserComment
