@@ -13,11 +13,11 @@ import Login from "./pages/Login";
 import PageNotFound from "./pages/404";
 import Navigation from "./components/Navigation";
 import Cookie from "js-cookie";
-import { Redirect } from "react-router-dom";
+import { Switch } from "react-router";
 // import { Post } from './components/Post';
 // import { Navigate } from "react-router-dom";
 import Signup from "./pages/Signup";
-import "./App.css"
+import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
@@ -33,6 +33,8 @@ function App() {
     const checkResult = await authCheck.json();
     console.log("checkResult: " + JSON.stringify(checkResult));
 
+    var loggedIn = false;
+
     if (
       checkResult &&
       checkResult.email != null &&
@@ -41,6 +43,7 @@ function App() {
       //If the user alreacy has a valid token - show that they are already authorized
       console.log("checkResult.email: " + checkResult.email);
       setAuthUser(checkResult);
+      loggedIn = true;
     } else {
       // Redirect to Login Page
       // window.location.href = "/login";
@@ -54,15 +57,45 @@ function App() {
 
   return (
     <div>
-
       <Router>
         <Navigation />
         <Routes>
-          <Route path="/" element={<Home authUser={authUser} />} />
+            <Route exact path="/" element={<Home authUser={authUser} />} />
+
+            <Route path="/login" element={<Login authUser={authUser} />} />
+            <Route path="/signup" element={<Signup />} />
+            {/* <Route path="/login" render={()=> <Login authUser={authUser} />} /> */}
+            <Route
+              path="/users"
+              element={
+                authUser ? <Users /> : <Navigate replace to={"/login"} />
+              }
+            />
+
+            <Route path="/Post" element={<Post />} />
+
+            <Route path="/user">
+              <Route path=":id" element={<User />} />
+            </Route>
+            <Route path="*" element={<PageNotFound />} />
+        </Routes>
+      </Router>
+
+      {/* <Router>
+        <Navigation />
+        <Routes>
+          <Route exact path="/" element={<Home authUser={authUser} />} 
+          render={() => (
+            authUser.email ? (
+              <Navigate to="/"/>
+            ) : (
+              <Login/>
+            )
+          )}/>
 
           <Route path="/login" element={<Login authUser={authUser} />} />
           <Route path="/signup" element={<Signup />} />
-          {/* <Route path="/login" render={()=> <Login authUser={authUser} />} /> */}
+          { <Route path="/login" render={()=> <Login authUser={authUser} />} /> }
           <Route path="/users" element={<Users />} />
 
           <Route path="/Post" element={<Post />} />
@@ -72,7 +105,7 @@ function App() {
           </Route>
           <Route path="*" element={<PageNotFound />} />
         </Routes>
-      </Router>
+      </Router> */}
     </div>
   );
 }
