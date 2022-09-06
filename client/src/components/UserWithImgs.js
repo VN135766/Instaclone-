@@ -1,48 +1,74 @@
 import { useState } from "react";
+import { useParams } from 'react-router-dom';
 
 import Carousel from "react-bootstrap/Carousel"
 import Badge from "react-bootstrap/Badge"
+import Button from 'react-bootstrap/Button';
 
 const UserWithImgs = (props) => {
     const [index, setIndex] = useState(0);
+    const { id } = useParams()
 
     const handleSelect = (selectedIndex, e) => {
         setIndex(selectedIndex);
     };
 
+    const handleFollow = async () => {
+        const response = await fetch(`/api//user/follow/${id}`, {
+            method: 'PUT',
+            headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}`}
+        });
+        const parsedResponse = await response.json();
 
-    console.log(props)
+        console.log(parsedResponse)
+    }
 
     const {
-        name,
-        images
+        posts,
+        name
     } = props;
-
-    console.log(name)
-    console.log(images)
 
     return (
         <div>
-            <h3>{name}</h3>
+            <div style={{
+                display: 'flex',
+                margin: '1rem'
+            }}>
+                <h3
+                    style={{
+                        margin: '1rem'
+                    }}
+                >
+                    {name}
+                </h3>
+                <Button
+                    style={{
+                        margin: '1rem'
+                    }}
+                    onClick={handleFollow}
+                >
+                    Follow
+                </Button>
+            </div>
 
             <Carousel activeIndex={index} onSelect={handleSelect}>
-                {images.map((image) => {
+                {posts.map(post => {
                     return (
-                        <Carousel.Item key={image.title}>
+                        <Carousel.Item key={post._id}>
                             <img
                                 className="d-block w-100"
-                                src={image.src}
-                                alt={image.title}
+                                src={post.image}
+                                alt={post.imageName}
                             />
                             <Carousel.Caption>
-                                <h4>{image.title}</h4>
-                                <p>{image.caption}</p>
+                                <h4>{post.imageName}</h4>
+                                <p>{post.captionName}</p>
                                 <div
                                     className={{
                                         display: 'flex'
                                     }}
                                 >
-                                    {image.tags.map((tag) => {
+                                    {post.tags.map((tag) => {
                                         return (
                                             <Badge
                                                 pill

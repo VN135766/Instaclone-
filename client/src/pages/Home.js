@@ -1,38 +1,57 @@
-import React, {useState} from 'react'
+import React, { useState, useEffect } from 'react'
 import Post from './Post'
 
+import Container from 'react-bootstrap/Container';
+import Spinner from 'react-bootstrap/Spinner';
+
 const Home = (props) => {
-  const [posts, setPosts] = useState([
-    {
-      id: 1,
-      username: "placeholder",
-      caption: "Placeholder Caption",
-      imageUrl: "https://cdn-media-1.freecodecamp.org/images/1*qUlxDdY3T-rDtJ4LhLGkEg.png",
-    },
-    {
-      id: 2,
-      username: "placeholder 2",
-      caption: "Placeholder Caption",
-      imageUrl: "https://cdn-media-1.freecodecamp.org/images/1*qUlxDdY3T-rDtJ4LhLGkEg.png",
-    },
-  ])
-  
+  const [posts, setPosts] = useState(null)
+
+  const fetchPosts = async () => {
+    const lookupQuery = await fetch(`/api/post/`);
+    const parsedResponse = await lookupQuery.json();
+
+    if (parsedResponse.result === 'success') {
+      setPosts(parsedResponse.payload)
+    }
+  }
+
+  useEffect(() => {
+    fetchPosts()
+  }, []);
+
+  if (!posts) {
+    return (
+      <Container style={{
+        display: 'flex',
+        justifyContent: 'center',
+        padding: '1.5rem'
+      }}>
+        <Spinner animation='border' role='status'>
+          <span className='visually-hidden'>Loading...</span>
+        </Spinner>
+      </Container>
+    );
+  }
+
   return (
     <div>
       <h1 className="text-center">Welcome to Instaclone!</h1>
-
-      { props.authUser && props.authUser.email !== undefined && (
-        <p>We have a logged in user: { props.authUser.email } </p>
-      )}
 
       <section>
 
         {
           posts.map(post => (
-            <Post key={post.id} username={post.username} caption={post.caption} imageUrl={post.imageUrl}/>
+            <Post
+              key={post._id}
+              username={post.createdBy.user_name}
+              caption={post.imageCaption}
+              imageUrl={post.image}
+              userID={post.createdBy._id}
+            />
           ))
         }
- 
+
       </section>
     </div>
   )
