@@ -11,42 +11,42 @@ const getAllPosts = async (req, res) => {
   console.log("====================")
   console.log("getAllPosts function")
 
-  if (testStatus) {
-    // if we are in test mode
-    var token = devToken
-  } else {
-    // must have a token in the header
-    console.log('ahfkjahdflkjahdklfhaldkjf')
-    if (!req.headers.cookie.split('=')[1]) {
-      return res.status(401)
-        .json({ msg: "un-authorized - missing or expired token in req header" })
-    }
-    let token = req.headers.cookie.split('=')[1]
-  }
+  // if (testStatus) {
+  //   // if we are in test mode
+  //   var token = devToken
+  // } else {
+  //   // must have a token in the header
+  //   console.log('ahfkjahdflkjahdklfhaldkjf')
+  //   if (!req.headers.cookie.split('=')[1]) {
+  //     return res.status(401)
+  //       .json({ msg: "un-authorized - missing or expired token in req header" })
+  //   }
+  //   let token = req.headers.cookie.split('=')[1]
+  // }
 
-  const user = decodeToken(token)
+  // const user = decodeToken(token)
 
-  console.log(user)
-  if (user.valid) {
-    console.log("A token was passed in the request")
-    console.log("user name: ", user.user_name)
-    try {
-      const getAllQuery = await Post.find({})
-        .populate({
-          path: 'comments',
-          select: '-__v'
-        })
-        .populate({
-          path: 'createdBy',
-          select: ('user_name')
-        })
-      res.status(200).json({ result: "success", payload: getAllQuery });
-    } catch (err) {
-      res.status(400).json({ message: 'No posts found' });
-    }
-  } else {
-    res.status(401).json({ message: "UnAuthorized - invalid token" })
-  }
+ // console.log(user)
+//   if (user.valid) {
+//     console.log("A token was passed in the request")
+//     console.log("user name: ", user.user_name)
+//     try {
+//       const getAllQuery = await Post.find({})
+//         .populate({
+//           path: 'comments',
+//           select: '-__v'
+//         })
+//         .populate({
+//           path: 'createdBy',
+//           select: ('user_name')
+//         })
+//       res.status(200).json({ result: "success", payload: getAllQuery });
+//     } catch (err) {
+//       res.status(400).json({ message: 'No posts found' });
+//     }
+//   } else {
+//     res.status(401).json({ message: "UnAuthorized - invalid token" })
+//   }
 }
 
 // get post by id
