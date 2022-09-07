@@ -19,6 +19,7 @@ import { Switch } from "react-router";
 import Signup from "./pages/Signup";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import CreatePost from "./pages/CreatePost";
 
 function App() {
   const [authUser, setAuthUser] = useState(null);
@@ -60,24 +61,31 @@ function App() {
       <Router>
         <Navigation />
         <Routes>
-            <Route exact path="/" element={<Home authUser={authUser} />} />
+          <Route exact path="/" element={<Home authUser={authUser} />} />
 
-            <Route path="/login" element={<Login authUser={authUser} />} />
-            <Route path="/signup" element={<Signup />} />
-            {/* <Route path="/login" render={()=> <Login authUser={authUser} />} /> */}
-            <Route
-              path="/users"
-              element={
-                authUser ? <Users /> : <Navigate replace to={"/login"} />
-              }
-            />
+          <Route path="/login" element={<Login authUser={authUser} />} />
+          <Route path="/signup" element={<Signup />} />
+          {/* <Route path="/login" render={()=> <Login authUser={authUser} />} /> */}
+          <Route
+            path="/users"
+            element={
+              authUser ? <Users /> : <Navigate replace to={"/login"} />
+            }
+          />
 
-            <Route path="/Post" element={<Post />} />
+          <Route path="/Post" element={<Post />} />
 
-            <Route path="/user">
-              <Route path=":id" element={<User />} />
-            </Route>
-            <Route path="*" element={<PageNotFound />} />
+          <Route
+            path="/create"
+            element={
+              authUser ? <CreatePost /> : <Navigate replace to={"/login"} />
+            }
+          />
+
+          <Route path="/user">
+            <Route path=":id" element={<User />} />
+          </Route>
+          <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Router>
 
