@@ -59,8 +59,7 @@ const getPostById = async (req, res) => {
     var token = devToken
   } else {
     // must have a token in the header
-    if (!req.headers.cookie.split('=')[1]
-  }) {
+    if (!req.headers.cookie.split('=')[1]) {
       return res.status(401)
         .json({ msg: "un-authorized - missing or expired token in req header" })
     }
