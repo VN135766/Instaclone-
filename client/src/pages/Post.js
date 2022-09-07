@@ -1,7 +1,7 @@
 import React from 'react'
 import '../post.css'
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button'
+//import Form from 'react-bootstrap/Form'
+//import Button from 'react-bootstrap/Button'
 
 
 
@@ -19,20 +19,20 @@ function Post({ username, caption, imageUrl, userID, author, comment }) {
 
                 <h4 className='post_caption'><strong>{username}: </strong>{caption}</h4>
 
-                <h4 className='post_comment'><strong>{author}: </strong>{comment}</h4>
+                {/*<h4 className='post_comment'><strong>{author}: </strong>{comment}</h4>*/}
 
-                <div>
-                 <Form>
-                 <Form.Group className="" controlId="formBasicComment">
-                  <Form.Label>Comment</Form.Label>
-                 <Form.Control type="text" placeholder="Enter Comment" />
-                 </Form.Group>
+                {/*<div>
+                    <Form>
+                        <Form.Group className="" controlId="formBasicComment">
+                            <Form.Label>Comment</Form.Label>
+                            <Form.Control type="text" placeholder="Enter Comment" />
+                        </Form.Group>
 
-                 <Button variant="primary" type="submit">
-                     Post
-                 </Button>
-                 </Form>
-                 </div>
+                        <Button variant="primary" type="submit">
+                            Post
+                        </Button>
+                    </Form>
+                </div>*/}
             </div>
         </div>
     )

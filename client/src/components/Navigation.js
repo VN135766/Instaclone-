@@ -26,7 +26,7 @@ const Navigation = ({ authUser }) => {
             <ul id="nav-mobile" className="right hide-on-med-and-down">
               <li><Link to="/">Home</Link></li>
               {/*<li><Link to="/users">Following</Link></li>*/}
-              <li><Link to="/viewPost">View post test button</Link></li>
+              {/*<li><Link to="/viewPost">View post test button</Link></li>*/}
               <li>
                 <Link to="/signout">Sign Out</Link>
               </li>
