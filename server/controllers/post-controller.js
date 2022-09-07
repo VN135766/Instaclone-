@@ -25,8 +25,10 @@ const getAllPosts = async (req, res) => {
 
   // const user = decodeToken(token)
 
+
   // console.log(user)
   //if (user.valid) {
+
     console.log("A token was passed in the request")
     //console.log("user name: ", user.user_name)
     try {
