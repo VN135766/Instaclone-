@@ -3,16 +3,11 @@ A social media app similar to Instagram.
 
 <h2>Preview</h2>
 
-
-<img src="<placeholder>" alt="demo1"/>
-
-<img src="<placeholder>" alt="demo2"/>
-
-<img src="<placeholder>" alt="demo3"/>
+![image](https://user-images.githubusercontent.com/13123028/188987065-48aca390-9c5b-4ef6-b799-1cb7323d52bc.png)
 
 <h2>Demo</h2>
 
-<a href="<placeholder">Click here to go to the Live Demo</a><br/>
+<a href="https://still-eyrie-08657.herokuapp.com/">Click here to go to the Live Demo</a><br/>
 
 ## Installation Instructions
 
@@ -31,6 +26,7 @@ A social media app similar to Instagram.
   - Node.js
   - REST
   - Express js
+  - Multer
 
 - Auth
 
