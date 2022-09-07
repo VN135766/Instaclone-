@@ -1,38 +1,42 @@
 import { useState } from "react";
 import Cookie from "js-cookie";
 import { Alert, Button, Container, Form } from "react-bootstrap";
-import {Link,useHistory} from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 
 
-const LoginPage = (props) => {
+const LoginPage = ({ authUser, setAuthUser }) => {
   const [loginCreds, setLoginCreds] = useState({ email: "", password: "" });
   const [formMessage, setFormMessage] = useState({ type: "", msg: "" });
-
-  console.log("Login Page props.authUser: " + props.authUser);
-  if (props.authUser) {
-    alert("You can't login if you are logged in!")
-    window.location.href = "/";
-  }
+  const [toDashboard, setToDashboard] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
+
     setFormMessage({ type: "", msg: "" });
+
     const authCheck = await fetch("/api/user/auth", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(loginCreds),
     });
+
     const authResult = await authCheck.json();
     console.log("authResult: " + JSON.stringify(authResult));
 
     // If the login was good, save the returned token as a cookie
     if (authResult.result === "success") {
       Cookie.set("auth-token", authResult.token);
+
       setFormMessage({
         type: "success",
         msg: "Your login was successful. Proceed!",
       });
-      window.location.href = "/";
+
+      setLoginCreds({ email: "", password: "" });
+
+      setAuthUser(true)
+
+      return setToDashboard(true);
     } else {
       setFormMessage({
         type: "danger",
@@ -42,11 +46,15 @@ const LoginPage = (props) => {
     setLoginCreds({ email: "", password: "" });
   };
 
+  if (toDashboard || authUser) {
+    return <Navigate to="/" />;
+  }
+
   return (
     <Container className="mycard" style={{ padding: "50px 200px" }}>
-      
+
       <Form className="card auth-card .input-field " onSubmit={handleLogin}>
-      <h2>Instaclone</h2>
+        <h2>Instaclone</h2>
         <Form.Group className="mb-3" controlId="email">
           <Form.Label>Email address</Form.Label>
           <Form.Control

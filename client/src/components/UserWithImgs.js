@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useParams } from 'react-router-dom';
 
-import Carousel from "react-bootstrap/Carousel"
-import Badge from "react-bootstrap/Badge"
-import Button from 'react-bootstrap/Button';
+import Stack from "react-bootstrap/Stack"
+import Image from 'react-bootstrap/Image'
+
+import '../post.css'
 
 const UserWithImgs = (props) => {
     const [index, setIndex] = useState(0);
@@ -16,7 +17,7 @@ const UserWithImgs = (props) => {
     const handleFollow = async () => {
         const response = await fetch(`/api//user/follow/${id}`, {
             method: 'PUT',
-            headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}`}
+            headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
         });
         const parsedResponse = await response.json();
 
@@ -41,54 +42,27 @@ const UserWithImgs = (props) => {
                 >
                     {name}
                 </h3>
-                <Button
+                {/*<Button
                     style={{
                         margin: '1rem'
                     }}
                     onClick={handleFollow}
                 >
                     Follow
-                </Button>
+                </Button>*/}
             </div>
 
-            <Carousel activeIndex={index} onSelect={handleSelect}>
+            <Stack >
                 {posts.map(post => {
                     return (
-                        <Carousel.Item key={post._id}>
-                            <img
-                                className="d-block w-100"
-                                src={post.image}
-                                alt={post.imageName}
-                            />
-                            <Carousel.Caption>
-                                <h4>{post.imageName}</h4>
-                                <p>{post.captionName}</p>
-                                <div
-                                    className={{
-                                        display: 'flex'
-                                    }}
-                                >
-                                    {post.tags.map((tag) => {
-                                        return (
-                                            <Badge
-                                                pill
-                                                bg="light"
-                                                text="dark"
-                                                style={{
-                                                    marginLeft: '.25rem',
-                                                    marginRight: '.25rem'
-                                                }}
-                                            >
-                                                {tag}
-                                            </Badge>
-                                        )
-                                    })}
-                                </div>
-                            </Carousel.Caption>
-                        </Carousel.Item>
+                        <Image
+                            className="post_img"
+                            thumbnail
+                            src={`/${post.image}`}
+                        />
                     )
                 })}
-            </Carousel>
+            </Stack>
         </div>
     )
 };
