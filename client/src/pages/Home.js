@@ -49,6 +49,8 @@ const Home = (props) => {
               caption={post.imageCaption}
               imageUrl={post.image}
               userID={post.createdBy._id}
+              author={post.author._id}
+              comment={post.body}
             />
           ))
         }
