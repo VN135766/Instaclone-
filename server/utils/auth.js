@@ -1,11 +1,9 @@
 const jwt = require('jsonwebtoken');
 const cookie = require("cookie")
 
-const dotenv = require("dotenv");
-dotenv.config()
+require("dotenv").config()
 
-// const jwtSecret = process.env.JWT_SECRET;
-const jwtSecret = "Pyc9X6W7iPxou&caFYdDP";
+const jwtSecret = process.env.JWT_SECRET;
 
 const expiration = '200h';
 

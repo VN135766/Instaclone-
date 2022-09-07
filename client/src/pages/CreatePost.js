@@ -1,8 +1,13 @@
+import { useState } from 'react';
+
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 const CreatePost = (props) => {
+    const [file, setFile] = useState(null);
+    const [caption, setCaption] = useState('');
+
     return (
         <Container>
             <Form encType='multipart/form-data' method='POST' action='/api/post'>
@@ -14,6 +19,9 @@ const CreatePost = (props) => {
                         type="file"
                         required
                         name='image'
+                        onChange={e => {
+                            setFile(e.target.files[0])
+                        }}
                     />
                 </Form.Group>
 
@@ -26,6 +34,9 @@ const CreatePost = (props) => {
                         rows={5}
                         required
                         name='imageCaption'
+                        onChange={e => {
+                            setCaption(e.target.value)
+                        }}
                     />
                     <Button
                         className='m-2 align-self-center'
