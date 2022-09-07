@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Post from './Post'
+import Cookie from 'js-cookie'
 
 import Container from 'react-bootstrap/Container';
 import Spinner from 'react-bootstrap/Spinner';

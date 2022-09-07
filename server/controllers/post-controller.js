@@ -16,11 +16,12 @@ const getAllPosts = async (req, res) => {
     var token = devToken
   } else {
     // must have a token in the header
-    if (!req.headers.token) {
+    console.log('ahfkjahdflkjahdklfhaldkjf')
+    if (!req.headers.cookie.split('=')[1]) {
       return res.status(401)
         .json({ msg: "un-authorized - missing or expired token in req header" })
     }
-    let token = req.headers.token
+    let token = req.headers.cookie.split('=')[1]
   }
 
   const user = decodeToken(token)
