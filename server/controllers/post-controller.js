@@ -16,6 +16,7 @@ const getAllPosts = async (req, res) => {
     var token = devToken
   } else {
     // must have a token in the header
+    console.log(req.headers.token)
     if (!req.headers.token) {
       return res.status(401)
         .json({ msg: "un-authorized - missing or expired token in req header" })
