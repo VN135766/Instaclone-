@@ -23,7 +23,7 @@ function Post({ username, caption, imageUrl, userID, author, comment }) {
 
                 <div>
                  <Form>
-                 <Form.Group className="mb-3" controlId="formBasicComment">
+                 <Form.Group className="" controlId="formBasicComment">
                   <Form.Label>Comment</Form.Label>
                  <Form.Control type="text" placeholder="Enter Comment" />
                  </Form.Group>
