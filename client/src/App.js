@@ -19,6 +19,7 @@ import { Switch } from "react-router";
 import Signup from "./pages/Signup";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import CreatePost from "./pages/CreatePost";
 
 function App() {
   const [authUser, setAuthUser] = useState(null);
@@ -73,6 +74,8 @@ function App() {
             />
 
             <Route path="/Post" element={<Post />} />
+
+            <Route path="/create" element={<CreatePost />}/>
 
             <Route path="/user">
               <Route path=":id" element={<User />} />

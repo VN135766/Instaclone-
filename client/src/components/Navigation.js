@@ -29,6 +29,7 @@ const Navigation = (props) => {
         <li><Link to ="/users">Following</Link></li>
         <li><Link to ="/viewPost">View post test button</Link></li>
         <li><Link to ="/login">Login</Link></li>
+        <li><Link to ="/create">Post</Link></li>
       </ul>
     </div>
   </nav>
