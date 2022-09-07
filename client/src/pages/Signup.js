@@ -2,7 +2,7 @@ import { Link, useHistory } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { Alert, Button, Container, Form } from "react-bootstrap";
 import Cookie from "js-cookie";
-const Signup = () => {
+const Signup = ({ setAuthUser }) => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -34,8 +34,10 @@ const Signup = () => {
         }),
       });
       const authResult = await authCheck.json();
+
       console.log("authResult: " + JSON.stringify(authResult));
       console.log("authResult token: " + authResult.token);
+
       if (authResult.result === "success") {
         console.log("authResult token: " + authResult.token);
         Cookie.set("auth-token", authResult.token);
@@ -43,7 +45,8 @@ const Signup = () => {
           type: "success",
           msg: "Your login was successful. Proceed!",
         });
-        window.location.href = "/";
+
+        setAuthUser(true)
       } else {
         setFormMessage({
           type: "danger",

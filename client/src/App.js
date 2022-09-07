@@ -6,17 +6,14 @@ import {
   Navigate,
 } from "react-router-dom";
 import Home from "./pages/Home";
-import Post from "./pages/Post";
 import Users from "./pages/Users";
 import User from "./pages/User";
 import Login from "./pages/Login";
 import PageNotFound from "./pages/404";
 import Navigation from "./components/Navigation";
 import Cookie from "js-cookie";
-import { Switch } from "react-router";
-// import { Post } from './components/Post';
-// import { Navigate } from "react-router-dom";
 import Signup from "./pages/Signup";
+import Signout from "./pages/Signout"
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import CreatePost from "./pages/CreatePost";
@@ -59,32 +56,42 @@ function App() {
   return (
     <div>
       <Router>
-        <Navigation />
+        <Navigation authUser={authUser} />
         <Routes>
-          <Route exact path="/" element={<Home authUser={authUser} />} />
-
-          <Route path="/login" element={<Login authUser={authUser} />} />
-          <Route path="/signup" element={<Signup />} />
-          {/* <Route path="/login" render={()=> <Login authUser={authUser} />} /> */}
+          <Route
+            path="/"
+            element={
+              authUser ? <Home /> : <Navigate replace to={"/login"} />
+            }
+          />
+          <Route
+            path="/signout"
+            element={
+              authUser ? <Signout
+                setAuthUser={setAuthUser}
+              /> : <Navigate replace to={"/login"} />
+            }
+          />
           <Route
             path="/users"
             element={
               authUser ? <Users /> : <Navigate replace to={"/login"} />
             }
           />
-
-          <Route path="/Post" element={<Post />} />
-
           <Route
             path="/create"
             element={
               authUser ? <CreatePost /> : <Navigate replace to={"/login"} />
             }
           />
+          <Route
+            path="/user/:id"
+            element={<User />}
+          />
 
-          <Route path="/user">
-            <Route path=":id" element={<User />} />
-          </Route>
+          <Route path="/login" element={<Login authUser={authUser} setAuthUser={setAuthUser} />} />
+          <Route path="/signup" element={<Signup setAuthUser={setAuthUser} />} />
+
           <Route path="*" element={<PageNotFound />} />
         </Routes>
       </Router>

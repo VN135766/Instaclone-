@@ -1,11 +1,8 @@
-import Container from "react-bootstrap/Container"
-import { Link } from "react-router-dom"
-import Nav from "react-bootstrap/Nav"
-import Navbar from "react-bootstrap/Navbar"
+import { Link, Navigate } from "react-router-dom";
 import "../App.css"
 
 
-const Navigation = (props) => {
+const Navigation = ({ authUser }) => {
   return (
     // <Navbar className="nav-wrapper white">
     //   <Container>
@@ -22,17 +19,23 @@ const Navigation = (props) => {
     //   </Container>
     // </Navbar>
     <nav>
-    <div class="nav-wrapper white">
-      <a href="/" class="brand-logo">Instaclone</a>
-      <ul id="nav-mobile" class="right hide-on-med-and-down">
-        <li><Link to ="/">Home</Link></li>
-        <li><Link to ="/users">Following</Link></li>
-        <li><Link to ="/viewPost">View post test button</Link></li>
-        <li><Link to ="/login">Login</Link></li>
-        <li><Link to ="/create">Post</Link></li>
-      </ul>
-    </div>
-  </nav>
+      <div className="nav-wrapper white">
+        <a href="/" className="brand-logo m-2">Instaclone</a>
+        {
+          authUser && (
+            <ul id="nav-mobile" className="right hide-on-med-and-down">
+              <li><Link to="/">Home</Link></li>
+              {/*<li><Link to="/users">Following</Link></li>*/}
+              <li><Link to="/viewPost">View post test button</Link></li>
+              <li>
+                <Link to="/signout">Sign Out</Link>
+              </li>
+              <li><Link to="/create">Post</Link></li>
+            </ul>
+          )
+        }
+      </div>
+    </nav>
   )
 }
 

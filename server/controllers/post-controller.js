@@ -11,24 +11,24 @@ const getAllPosts = async (req, res) => {
   console.log("====================")
   console.log("getAllPosts function")
 
-  if (testStatus) {
-    // if we are in test mode
-    var token = devToken
-  } else {
-    // must have a token in the header
-    if (!req.headers.cookie.split('=')[1]) {
-      return res.status(401)
-        .json({ msg: "un-authorized - missing or expired token in req header" })
-    }
-    let token = req.headers.cookie.split('=')[1]
-  }
+  // if (testStatus) {
+  //   // if we are in test mode
+  //   var token = devToken
+  // } else {
+  //   // must have a token in the header
+  //   if (!req.headers.cookie.split('=')[1]) {
+  //     return res.status(401)
+  //       .json({ msg: "un-authorized - missing or expired token in req header" })
+  //   }
+  //   let token = req.headers.cookie.split('=')[1]
+  // }
 
-  const user = decodeToken(token)
+  // const user = decodeToken(token)
 
-  console.log(user)
-  if (user.valid) {
+  // console.log(user)
+  //if (user.valid) {
     console.log("A token was passed in the request")
-    console.log("user name: ", user.user_name)
+    //console.log("user name: ", user.user_name)
     try {
       const getAllQuery = await Post.find({})
         .populate({
@@ -43,9 +43,9 @@ const getAllPosts = async (req, res) => {
     } catch (err) {
       res.status(400).json({ message: 'No posts found' });
     }
-  } else {
-    res.status(401).json({ message: "UnAuthorized - invalid token" })
-  }
+  // } else {
+  //   res.status(401).json({ message: "UnAuthorized - invalid token" })
+  // }
 }
 
 // get post by id
