@@ -16,12 +16,11 @@ const getAllPosts = async (req, res) => {
     var token = devToken
   } else {
     // must have a token in the header
-    console.log(req.headers.token)
-    if (!req.headers.token) {
+    if (!req.headers.cookie.split('=')[1]) {
       return res.status(401)
         .json({ msg: "un-authorized - missing or expired token in req header" })
     }
-    let token = req.headers.token
+    let token = req.headers.cookie.split('=')[1]
   }
 
   const user = decodeToken(token)
@@ -60,11 +59,12 @@ const getPostById = async (req, res) => {
     var token = devToken
   } else {
     // must have a token in the header
-    if (!req.headers.token) {
+    if (!req.headers.cookie.split('=')[1]
+  }) {
       return res.status(401)
         .json({ msg: "un-authorized - missing or expired token in req header" })
     }
-    let token = req.headers.token
+    let token = req.headers.cookie.split('=')[1]
   }
 
   // decode the token and return either a user or an error
@@ -102,11 +102,11 @@ const createPost = async (req, res) => {
   //   var token = devToken
   // } else {
   //   // must have a token in the header
-  //   if (!req.headers.token) {
-  //     return res.status(401)
-  //       .json({ msg: "un-authorized - missing or expired token in req header" })
-  //   }
-  //   let token = req.headers.token
+  // if (!req.headers.cookie.split('=')[1]) {
+  //   return res.status(401)
+  //     .json({ msg: "un-authorized - missing or expired token in req header" })
+  // }
+  // let token = req.headers.cookie.split('=')[1]
   // }
 
   // decode the token and return either a user or an error
@@ -184,11 +184,11 @@ const deletePost = async (req, res) => {
     if (testStatus){ 
       var token = devToken
     } else {
-      if( !req.headers.token) {
+      if( !req.headers.cookie.split('=')[1]) {
         return res.status(401)
         .json({msg: "un-authorized - missing or expired token in req header"})
       }
-      let token = req.headers.token
+      let token = req.headers.cookie.split('=')[1]
     }
 
     // decode the token and check if valid user

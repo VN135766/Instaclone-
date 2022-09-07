@@ -20,11 +20,11 @@ const addComment = async ({ params, body }, res) => {
   if (testStatus){ 
     var token = devToken
   } else {
-    if( !req.headers.token) {
+    if( !req.headers.cookie.split('=')[1]) {
       return res.status(401)
       .json({msg: "un-authorized - missing or expired token in req header"})
     }
-    let token = req.headers.token
+    let token = req.headers.cookie.split('=')[1]
   }
 
   const user = decodeToken(token)
@@ -93,11 +93,11 @@ const addComment = async ({ params, body }, res) => {
     if (testStatus){ 
       var token = devToken
     } else {
-      if( !req.headers.token) {
+      if( !req.headers.cookie.split('=')[1]) {
         return res.status(401)
         .json({msg: "un-authorized - missing or expired token in req header"})
       }
-      let token = req.headers.token
+      let token = req.headers.cookie.split('=')[1]
     }
 
     // decode the token and check if valid user
@@ -146,11 +146,11 @@ const addComment = async ({ params, body }, res) => {
     if (testStatus){ 
       var token = devToken
     } else {
-      if( !req.headers.token) {
+      if( !req.headers.cookie.split('=')[1]) {
         return res.status(401)
         .json({msg: "un-authorized - missing or expired token in req header"})
       }
-      let token = req.headers.token
+      let token = req.headers.cookie.split('=')[1]
     }
     const user = decodeToken(token)
     if(user.valid){
